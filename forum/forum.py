@@ -21,7 +21,7 @@
 #       MA 02110-1301, USA.
 #
 
-import cgi, re, sys, os
+import re, sys, os
 from urllib import unquote
 from google.appengine.api import users
 from google.appengine.ext import webapp
@@ -29,24 +29,18 @@ from google.appengine.ext import db
 from google.appengine.ext.webapp import template
 from google.appengine.ext.webapp.util import run_wsgi_app
 
-sys.path.append(os.getcwd())
+sys.path.append("../")
 
 import models
 from utils import *
 
-class MainPage(webapp.RequestHandler):
+class MainPage(TpmRequestHandler):
 	def get(self):
-		categories = models.Category().gql("ORDER BY title")
+		categories = models.Category().gql("ORDER BY title").fetch(1000)
 
-		template_values = {
-			"login": create_login_box(self.request.uri),
-			"is_admin": str(users.get_current_user()) in ADMINS,
-			"categories": categories.fetch(1000),
-		}
+		self.forum_render("index.html", categories=categories)
 
-		self.response.out.write(template.render("templates/index.html", template_values))
-
-	@admin_required
+	@administrator
 	@login_required
 	def post(self):
 		if not self.request.get("title"):
@@ -68,7 +62,7 @@ class MainPage(webapp.RequestHandler):
 
 		self.redirect('/forum/')
 
-class TopicsPage(webapp.RequestHandler):
+class TopicsPage(TpmRequestHandler):
 	def get(self, category):
 		#cat = models.Category().get_by_key_name(category)
 		cat = models.Category().gql("WHERE slug = :1 LIMIT 1", db.Category(category))
@@ -89,17 +83,12 @@ class TopicsPage(webapp.RequestHandler):
 		decorated.sort()
 		decorated.reverse()
 		array = [dict_ for (key, dict_) in decorated]
-
-		template_values = {
-			"login": create_login_box(self.request.uri),
-			"slug": category,
-			"category": models.Category().gql("WHERE slug = :1 LIMIT 1", db.Category(category))[0].title,
-			"is_logged": users.get_current_user() != None,
-			"is_admin": str(users.get_current_user()) in ADMINS,
-			"topics": array,
-		}
-
-		self.response.out.write(template.render("templates/topics.html", template_values))
+		
+		slug = category
+		category = models.Category().gql("WHERE slug = :1 LIMIT 1", db.Category(category))[0].title
+		topics = array
+		
+		self.forum_render("topics.html", slug=slug, category=category, topics=topics)
 
 	@login_required
 	def post(self, category):
@@ -133,7 +122,7 @@ class TopicsPage(webapp.RequestHandler):
 
 		self.redirect("/forum/%s/" % category)
 
-class PostsPage(webapp.RequestHandler):
+class PostsPage(TpmRequestHandler):
 	def get(self, category, topic):
 		#cat = models.Category().get_by_key_name(category)
 		cat = models.Category().gql("WHERE slug = :1 LIMIT 1", db.Category(category))
@@ -143,21 +132,16 @@ class PostsPage(webapp.RequestHandler):
 		if not posts.count():
 			error(self, 404, uri="/%s/" % category);return
 
-		template_values = {
-			"login": create_login_box(self.request.uri),
-			"topic": posts[0].title,
-			"category": cat[0].title,
-			"is_logged": users.get_current_user() != None,
-			"is_admin": str(users.get_current_user()) in ADMINS,
-			"slug": {
-				"category": category,
-				"topic": topic
-			},
-			"title": "Re: %s" % models.Post().gql("WHERE topic_id = :1 ORDER BY date ASC LIMIT 1", topic)[0].title,
-			"posts": posts,
-		}
+		topic = posts[0].title
+		category = cat[0].title
+		slug = {
+			"category": category,
+			"topic": topic
+		},
+		title = "Re: %s" % models.Post().gql("WHERE topic_id = :1 ORDER BY date ASC LIMIT 1", topic)[0].title
+		posts = posts
 
-		self.response.out.write(template.render("templates/posts.html", template_values))
+		self.forum_render("posts.html", topic=topic, category=category, slug=slug, title=title, posts=posts)
 
 	@login_required
 	def post(self, category, topic):
@@ -191,9 +175,9 @@ class PostsPage(webapp.RequestHandler):
 
 application = webapp.WSGIApplication(
 	[
-		('/forum/(.+)/(.+)/', PostsPage),
-		('/forum/(.+)/', TopicsPage),
-		('/forum/', MainPage),
+		('/forum/(.+)/(.+)', PostsPage),
+		('/forum/(.+)', TopicsPage),
+		('/forum', MainPage),
 	],
 
 	debug=True)

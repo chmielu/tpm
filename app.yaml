@@ -1,5 +1,5 @@
-application: homepage2303
-version: 2
+application: tpm
+version: 1
 runtime: python
 api_version: 1
 
@@ -7,10 +7,22 @@ handlers:
 - url: /static
   static_dir: static
 
-- url: /forum/admin/.*
+- url: /admin.*
+  script: blog/admin.py
+  login: required
+
+- url: /blog/help.*
+  script: blog/help.py
+
+- url: /forum/admin.*
   script: forum/admin.py
   login: required
 
-- url: /forum/.*
+- url: /forum.*
   script: forum/forum.py
 
+- url: /help.*
+  script: blog/help.py
+
+- url: /.*
+  script: blog/blog.py

@@ -22,7 +22,7 @@
 #
 
 
-import cgi, sys, os
+import sys, os
 from urllib import unquote
 from google.appengine.api import users
 from google.appengine.ext import webapp
@@ -30,27 +30,23 @@ from google.appengine.ext import db
 from google.appengine.ext.webapp import template
 from google.appengine.ext.webapp.util import run_wsgi_app
 
-sys.path.append(os.getcwd())
+sys.path.append("../")
 
 import models
 from utils import *
 
-class DeleteCategoryPage(webapp.RequestHandler):
-	@admin_required
+class DeleteCategoryPage(TpmRequestHandler):
+	@administrator
 	def get(self, category):
 		cat = models.Category().gql("WHERE slug = :1 LIMIT 1", db.Category(category))
 		if not cat.count():
 			error(self, 404);return
+		
+		title = cat[0].title
+		slug = category
+		self.forum_render("delete_category.html", title=title, slug=slug)
 
-		template_values = {
-			"login": create_login_box(self.request.uri),
-			"is_admin": str(users.get_current_user()) in ADMINS,
-			"title": cat[0].title,
-			"slug": category,
-		}
-		self.response.out.write(template.render("templates/delete_category.html", template_values))
-
-	@admin_required
+	@administrator
 	def post(self, category):
 		if self.request.get("delete_confirmation") == "no":
 			self.redirect("/forum/")
@@ -68,8 +64,8 @@ class DeleteCategoryPage(webapp.RequestHandler):
 
 			self.redirect("/forum/")
 
-class DeleteTopicPage(webapp.RequestHandler):
-	@admin_required
+class DeleteTopicPage(TpmRequestHandler):
+	@administrator
 	def get(self, category, topic):
 		cat = models.Category().gql("WHERE slug = :1 LIMIT 1", db.Category(category))
 		if not cat.count():
@@ -78,18 +74,14 @@ class DeleteTopicPage(webapp.RequestHandler):
 		if not posts.count():
 			error(self, 404, uri="/%s/" % category);return
 
-		template_values = {
-			"login": create_login_box(self.request.uri),
-			"is_admin": str(users.get_current_user()) in ADMINS,
-			"title": posts[0].title,
-			"slug": {
-				"category": category,
-				"topic": topic
-			},
+		title = posts[0].title
+		slug = {
+			"category": category,
+			"topic": topic
 		}
-		self.response.out.write(template.render("templates/delete_topics.html", template_values))
+		self.forum_render("delete_topics.html", title=title, slug=slug)
 
-	@admin_required
+	@administrator
 	def post(self, category, topic):
 		if self.request.get("delete_confirmation") == "no":
 			self.redirect("/forum/%s/" % category)
@@ -111,8 +103,8 @@ class DeleteTopicPage(webapp.RequestHandler):
 
 			self.redirect("/forum/%s/" % category)
 
-class DeletePostPage(webapp.RequestHandler):
-	@admin_required
+class DeletePostPage(TpmRequestHandler):
+	@administrator
 	def get(self, slug):
 		try:
 			key = db.Key(slug)
@@ -124,15 +116,11 @@ class DeletePostPage(webapp.RequestHandler):
 		if not post:
 			error(self, 400, "wrong post id!");return
 
-		template_values = {
-			"login": create_login_box(self.request.uri),
-			"is_admin": str(users.get_current_user()) in ADMINS,
-			"title": post.title,
-			"slug": slug,
-		}
-		self.response.out.write(template.render("templates/delete_posts.html", template_values))
+		title = post.title
 
-	@admin_required
+		self.forum_render("delete_posts.html", title=title, slug=slug)
+
+	@administrator
 	def post(self, slug):
 		if self.request.get("delete_confirmation") == "no":
 			self.redirect("/")
@@ -154,23 +142,19 @@ class DeletePostPage(webapp.RequestHandler):
 			post.delete()
 			self.redirect('/forum/')
 
-class EditCategoryPage(webapp.RequestHandler):
-	@admin_required
+class EditCategoryPage(TpmRequestHandler):
+	@administator
 	def get(self, category):
 		cat = models.Category().gql("WHERE slug = :1 LIMIT 1", db.Category(category))
 		if not cat.count():
 			error(self, 404);return
 
-		template_values = {
-			"login": create_login_box(self.request.uri),
-			"is_admin": str(users.get_current_user()) in ADMINS,
-			"title": cat[0].title,
-			"slug": category,
-			"desc": cat[0].desc,
-		}
-		self.response.out.write(template.render("templates/edit_category.html", template_values))
+			title = cat[0].title
+			slug = category
+			desc = cat[0].desc
+		self.forum_render("edit_category.html", title=title, slug=slug, desc=desc)
 
-	@admin_required
+	@administrator
 	def post(self, category):
 		cat = models.Category().gql("WHERE slug = :1 LIMIT 1", db.Category(category))
 		if not cat.count():
@@ -195,8 +179,8 @@ class EditCategoryPage(webapp.RequestHandler):
 
 		self.redirect("/")
 
-class EditTopicPage(webapp.RequestHandler):
-	@admin_required
+class EditTopicPage(TpmRequestHandler):
+	@administrator
 	def get(self, category, topic):
 		cat = models.Category().gql("WHERE slug = :1 LIMIT 1", db.Category(category))
 		if not cat.count():
@@ -205,19 +189,15 @@ class EditTopicPage(webapp.RequestHandler):
 		if not posts.count():
 			error(self, 404, uri="/forum/%s/" % category);return
 
-		template_values = {
-			"login": create_login_box(self.request.uri),
-			"is_admin": str(users.get_current_user()) in ADMINS,
-			"title": posts[0].title,
-			"content": posts[0].content,
-			"slug": {
-				"category": category,
-				"topic": topic
-			},
+		title = posts[0].title
+		content = posts[0].content
+		slug = {
+			"category": category,
+			"topic": topic
 		}
-		self.response.out.write(template.render("templates/edit_topics.html", template_values))
+		self.forum_render("edit_topics.html", title=title, content=content, slug=slug)
 
-	@admin_required
+	@administrator
 	def post(self, category, topic):
 		cat = models.Category().gql("WHERE slug = :1 LIMIT 1", db.Category(category))
 		if not cat.count(): error(self, 400, "wrong category id!");return
@@ -248,8 +228,8 @@ class EditTopicPage(webapp.RequestHandler):
 
 		self.redirect("/forum/%s/" % category)
 
-class EditPostPage(webapp.RequestHandler):
-	@admin_required
+class EditPostPage(TpmRequestHandler):
+	@administrator
 	def get(self, slug):
 		try:
 			key = db.Key(slug)
@@ -261,16 +241,13 @@ class EditPostPage(webapp.RequestHandler):
 		if not post:
 			error(self, 400, "wrong post id!");return
 
-		template_values = {
-			"login": create_login_box(self.request.uri),
-			"is_admin": str(users.get_current_user()) in ADMINS,
-			"title": post.title,
-			"content": post.content,
-			"slug": slug,
-		}
-		self.response.out.write(template.render("templates/edit_posts.html", template_values))
+		title = post.title
+		content = post.content
+		slug = slug
+		
+		self.forum_render("edit_posts.html", title=title, content=content, slug=slug)
 
-	@admin_required
+	@administrator
 	def post(self, slug):
 		try:
 			key = db.Key(slug)
@@ -292,13 +269,13 @@ class EditPostPage(webapp.RequestHandler):
 
 application = webapp.WSGIApplication(
 	[
-		('/forum/admin/delete/topic/(.+)/(.+)/', DeleteTopicPage),
-		('/forum/admin/delete/post/(.+)/', DeletePostPage),
-		('/forum/admin/delete/category/(.+)/', DeleteCategoryPage),
+		('/forum/admin/delete/topic/(.+)/(.+)', DeleteTopicPage),
+		('/forum/admin/delete/post/(.+)', DeletePostPage),
+		('/forum/admin/delete/category/(.+)', DeleteCategoryPage),
 
-		('/forum/admin/edit/topic/(.+)/(.+)/', EditTopicPage),
-		('/forum/admin/edit/post/(.+)/', EditPostPage),
-		('/forum/admin/edit/category/(.+)/', EditCategoryPage),
+		('/forum/admin/edit/topic/(.+)/(.+)', EditTopicPage),
+		('/forum/admin/edit/post/(.+)', EditPostPage),
+		('/forum/admin/edit/category/(.+)', EditCategoryPage),
 	],
 
 	debug=True)
