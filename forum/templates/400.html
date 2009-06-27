@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block title %}Bad request{% endblock %}
+{% block extrahead %}<meta http-equiv="refresh" content="10;url=/">{% endblock %}
+{% block content %}
+		<div class="box">
+			<h2>Your methods are wrong, Herr Flick!</h2>
+			<p>
+				{% if message %}{{ message }}{% else %}Bad request. Nothing more.{% endif %}
+			</p>
+			<p class="grey"><a href="javascript:history.go(-1)">Go back</a> &bull; <a href="/">Go to homepage</a></p>
+		</div>
+{% endblock %}

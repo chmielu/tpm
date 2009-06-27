@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block content %}
+		<div class="post_header">
+			<a href="/">The Puppets Masters</a>
+		</div>
+		<div class="post">
+			<h2>Forums</h2>
+
+			{% if categories %}
+			<table id="forum">
+				<tr>
+					<th class="left">Title</th>
+					<th>Topics</th>
+					<th>Posts</th>
+					{% if is_admin %}
+					<th colspan="2">Admin</th>
+					{% endif %}
+				</tr>
+				{% for category in categories %}
+				<tr>
+					<td><a href="{{ category.slug }}/">{{ category.title|escape }}</a>{% if category.desc %}<span>{{ category.desc|escape }}</span>{% endif %}</td>
+					<td class="replies">{{ category.topics }}</td>
+					<td class="replies">{{ category.posts }}</td>
+					{% if is_admin %}
+					<td><a href="/admin/edit/category/{{ category.slug }}/">Edit</a></td>
+					<td><a href="/admin/delete/category/{{ category.slug }}/">Delete</a></td>
+					{% endif %}
+				</tr>
+				{% endfor %}
+			</table>
+			{% else %}
+			<p>No categories found.</p>
+			{% endif %}
+		</div>
+
+		{% if is_admin %}
+		<div class="post">
+			<h2>Create new category:</h2>
+			<form action="/" method="post">
+				<span class="input"><input type="text" name="title" onkeyup="slugify('slug', this.value)" /></span>
+				<span class="input"><input type="text" name="slug" id="slug" /></span>
+				<span class="input"><input type="text" name="desc" /></span>
+				<span class="input"><input type="submit" value="Create"/></span>
+			</form>
+		</div>
+		{% endif %}
+{% endblock %}

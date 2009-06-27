@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block content %}
+		<div class="post_header">Edit post:</div>
+		<div class="post">
+			<h2>Warning: You can NOT undo this changes!</h2>
+			<form action="/admin/edit/post/{{ slug }}/" method="post">
+				<span class="input"><input type="text" name="title" onkeyup="slugify('slug', this.value)" value="{{ title }}" /></span>
+				<span class="input"><textarea name="content">{{ content }}</textarea></span>
+				<span class="input"><input type="submit" value="Update"/><span class="note">Note: You can use <a href="http://offline.thepuma.eu/help/markup">bbcode syntax</a> (html is <b>not</b> allowed)</span></span>
+			</form>
+		</div>
+{% endblock %}
