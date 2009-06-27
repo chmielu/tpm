@@ -51,7 +51,7 @@ class DeleteCategoryPage(webapp.RequestHandler):
 	@admin_required
 	def post(self, category):
 		if self.request.get("delete_confirmation") == "no":
-			self.redirect("/")
+			self.redirect("/forum/")
 			return
 		elif self.request.get("delete_confirmation") == "yes":
 			cat = models.Category().gql("WHERE slug = :1 LIMIT 1", db.Category(category))
@@ -64,7 +64,7 @@ class DeleteCategoryPage(webapp.RequestHandler):
 				post.delete()
 			cat[0].delete()
 
-			self.redirect("/")
+			self.redirect("/forum/")
 
 class DeleteTopicPage(webapp.RequestHandler):
 	@admin_required
@@ -90,7 +90,7 @@ class DeleteTopicPage(webapp.RequestHandler):
 	@admin_required
 	def post(self, category, topic):
 		if self.request.get("delete_confirmation") == "no":
-			self.redirect("/%s/" % category)
+			self.redirect("/forum/%s/" % category)
 			return
 		elif self.request.get("delete_confirmation") == "yes":
 			cat = models.Category().gql("WHERE slug = :1 LIMIT 1", db.Category(category))
@@ -107,7 +107,7 @@ class DeleteTopicPage(webapp.RequestHandler):
 				post.delete()
 			cat.put()
 
-			self.redirect("/%s/" % category)
+			self.redirect("/forum/%s/" % category)
 
 class DeletePostPage(webapp.RequestHandler):
 	@admin_required
@@ -150,7 +150,7 @@ class DeletePostPage(webapp.RequestHandler):
 			post.category.put()
 
 			post.delete()
-			self.redirect('/')
+			self.redirect('/forum/')
 
 class EditCategoryPage(webapp.RequestHandler):
 	@admin_required
@@ -201,7 +201,7 @@ class EditTopicPage(webapp.RequestHandler):
 			error(self, 404);return
 		posts = models.Post().gql("WHERE topic_id = :1 AND category = :2 ORDER BY date ASC", db.Category(topic), cat[0])
 		if not posts.count():
-			error(self, 404, uri="/%s/" % category);return
+			error(self, 404, uri="/forum/%s/" % category);return
 
 		template_values = {
 			"login": create_login_box(self.request.uri),
@@ -244,7 +244,7 @@ class EditTopicPage(webapp.RequestHandler):
 			post.topic_id = slug
 			post.put()
 
-		self.redirect("/%s/" % category)
+		self.redirect("/forum/%s/" % category)
 
 class EditPostPage(webapp.RequestHandler):
 	@admin_required
@@ -286,17 +286,17 @@ class EditPostPage(webapp.RequestHandler):
 		post.content_html = re.sub("<br />$", "", to_html(self.request.get("content")))
 		post.put()
 
-		self.redirect('/')
+		self.redirect('/forum/')
 
 application = webapp.WSGIApplication(
 	[
-		('/admin/delete/topic/(.+)/(.+)/', DeleteTopicPage),
-		('/admin/delete/post/(.+)/', DeletePostPage),
-		('/admin/delete/category/(.+)/', DeleteCategoryPage),
+		('/forum/admin/delete/topic/(.+)/(.+)/', DeleteTopicPage),
+		('/forum/admin/delete/post/(.+)/', DeletePostPage),
+		('/forum/admin/delete/category/(.+)/', DeleteCategoryPage),
 
-		('/admin/edit/topic/(.+)/(.+)/', EditTopicPage),
-		('/admin/edit/post/(.+)/', EditPostPage),
-		('/admin/edit/category/(.+)/', EditCategoryPage),
+		('/forum/admin/edit/topic/(.+)/(.+)/', EditTopicPage),
+		('/forum/admin/edit/post/(.+)/', EditPostPage),
+		('/forum/admin/edit/category/(.+)/', EditCategoryPage),
 	],
 
 	debug=True)

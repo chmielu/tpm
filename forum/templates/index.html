@@ -2,7 +2,7 @@
 
 {% block content %}
 		<div class="post_header">
-			<a href="/">The Puppets Masters</a>
+			<a href="/forum/">The Puppets Masters</a>
 		</div>
 		<div class="post">
 			<h2>Forums</h2>
@@ -23,8 +23,8 @@
 					<td class="replies">{{ category.topics }}</td>
 					<td class="replies">{{ category.posts }}</td>
 					{% if is_admin %}
-					<td><a href="/admin/edit/category/{{ category.slug }}/">Edit</a></td>
-					<td><a href="/admin/delete/category/{{ category.slug }}/">Delete</a></td>
+					<td><a href="/forum/admin/edit/category/{{ category.slug }}/">Edit</a></td>
+					<td><a href="/forum/admin/delete/category/{{ category.slug }}/">Delete</a></td>
 					{% endif %}
 				</tr>
 				{% endfor %}
@@ -37,7 +37,7 @@
 		{% if is_admin %}
 		<div class="post">
 			<h2>Create new category:</h2>
-			<form action="/" method="post">
+			<form action="/forum/" method="post">
 				<span class="input"><input type="text" name="title" onkeyup="slugify('slug', this.value)" /></span>
 				<span class="input"><input type="text" name="slug" id="slug" /></span>
 				<span class="input"><input type="text" name="desc" /></span>

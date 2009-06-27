@@ -21,13 +21,15 @@
 #       MA 02110-1301, USA.
 #
 
-import cgi, re
+import cgi, re, sys, os
 from urllib import unquote
 from google.appengine.api import users
 from google.appengine.ext import webapp
 from google.appengine.ext import db
 from google.appengine.ext.webapp import template
 from google.appengine.ext.webapp.util import run_wsgi_app
+
+sys.path.append(os.getcwd())
 
 import models
 from utils import *
@@ -64,7 +66,7 @@ class MainPage(webapp.RequestHandler):
 			desc = self.request.get("desc")
 		).put()
 
-		self.redirect('/')
+		self.redirect('/forum/')
 
 class TopicsPage(webapp.RequestHandler):
 	def get(self, category):
@@ -129,7 +131,7 @@ class TopicsPage(webapp.RequestHandler):
 			topic_id = slugify(slug)
 		).put()
 
-		self.redirect("/%s/" % category)
+		self.redirect("/forum/%s/" % category)
 
 class PostsPage(webapp.RequestHandler):
 	def get(self, category, topic):
@@ -185,13 +187,13 @@ class PostsPage(webapp.RequestHandler):
 			topic_id = topic
 		).put()
 
-		self.redirect("/%s/%s/" % (category, topic))
+		self.redirect("/forum/%s/%s/" % (category, topic))
 
 application = webapp.WSGIApplication(
 	[
-		('/(.+)/(.+)/', PostsPage),
-		('/(.+)/', TopicsPage),
-		('/', MainPage),
+		('/forum/(.+)/(.+)/', PostsPage),
+		('/forum/(.+)/', TopicsPage),
+		('/forum/', MainPage),
 	],
 
 	debug=True)

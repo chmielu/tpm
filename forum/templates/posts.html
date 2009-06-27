@@ -2,7 +2,7 @@
 
 {% block content %}
 		<div class="post_header">
-			<a href="/">The Puppets Masters</a> &raquo; <a href="/{{ slug.category }}/">{{ category }}</a> &raquo; {{ topic }}
+			<a href="/forum/">The Puppets Masters</a> &raquo; <a href="/forum/{{ slug.category }}/">{{ category }}</a> &raquo; {{ topic }}
 		</div>
 		{% for post in posts %}
 		<div class="post">
@@ -11,8 +11,8 @@
 			<p class="grey">
 			{% if is_admin %}
 				{% if not forloop.first %}
-				<span style="float:right"><a href="/admin/delete/post/{{ post.key }}/">Delete</a></span>
-				<span style="float:right"><a href="/admin/edit/post/{{ post.key }}/">Edit</a>&nbsp;•&nbsp;</span>
+				<span style="float:right"><a href="/forum/admin/delete/post/{{ post.key }}/">Delete</a></span>
+				<span style="float:right"><a href="/forum/admin/edit/post/{{ post.key }}/">Edit</a>&nbsp;•&nbsp;</span>
 				{% endif %}
 			{% endif %}
 				posted by <a href="mailto:{{ post.user.email }}">{{ post.user.nickname|escape }}</a> on {{ post.date|date:"r" }}
@@ -24,7 +24,7 @@
 		{% if is_logged %}
 		<div class="post">
 			<h2>Create reply:</h2>
-			<form action="/{{ slug.category }}/{{ slug.topic }}/" method="post">
+			<form action="/forum/{{ slug.category }}/{{ slug.topic }}/" method="post">
 				<span class="input"><input name="title" value="{{ title }}" /></span>
 				<span class="input"><textarea name="content"></textarea></span>
 				<span class="input"><input type="submit" value="Create"/><span class="note">Note: You can use <a href="http://offline.thepuma.eu/help/markup">bbcode syntax</a> (html is <b>not</b> allowed)</span></span>
