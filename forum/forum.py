@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 #
-#       helloworld.py
+#       forum.py
 #
 #       Copyright 2009 Robert Chmielowiec <robert@chmielowiec.net>
 #
