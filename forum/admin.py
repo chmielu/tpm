@@ -22,7 +22,7 @@
 #
 
 
-import cgi
+import cgi, sys, os
 from urllib import unquote
 from google.appengine.api import users
 from google.appengine.ext import webapp
