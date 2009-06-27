@@ -1,0 +1,54 @@
+{% extends 'base_admin.html' %}
+
+{% block extrahead %}
+<script type="text/javascript" src="http://jqueryjs.googlecode.com/files/jquery-1.3.2.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $("#moar").click(toggle);
+            var toggled = false;
+
+            function toggle() {
+                if (!toggled) {
+                    $("#moardiv").show("slow");
+                    $("#moar").val("Hide ↑");
+                    toggled = true;
+                } else {
+                    $("#moardiv").hide("slow");
+                    $("#moar").val("More ↓");
+                    toggled = false;
+                }
+            }
+        });
+    </script>
+{% endblock %}
+
+{% block title %}New entry{% endblock %}
+{% block menu %}
+				<li><a href="/">Frontend</a></li>
+				<li><a href="/admin">Backend</a></li>
+				<li><a href="/admin/entry" id="current">Entries</a></li>
+				<li><a href="/admin/settings">Settings</a></li>
+{% endblock %}
+{% block submenu %}
+		<div id="adminmenu">
+			<ul>
+				<li><a href="/admin/entry">Entries</a></li>
+				<li><a href="/admin/entry/new" id="admin_current">New entry</a></li>
+			</ul>
+		</div>
+{% endblock %}
+{% block content %}
+		<div class="box">
+			<h2>Post a new entry</h2>
+			<div>
+				<form action="/admin/entry/new" method="post" accept-charset="utf-8">
+					<span class="input"><input type="text" name="title" value="" id="title" />
+					<textarea name="body" rows="10" cols="40"></textarea><div id="moardiv"><input type="text" name="slug" value="" id="slug" /></div>
+					<input type="button" id="moar" value="More ↓"/>
+					<input type="submit" value="Continue &rarr;" />
+					<span class="note">Note: You can use <a href="/help/markup">bbcode syntax</a> (html is <b>not</b> allowed)</span>
+					</span>
+				</form>
+			</div>
+		</div>
+{% endblock %}

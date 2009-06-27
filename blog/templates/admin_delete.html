@@ -1,0 +1,13 @@
+{% extends 'base_admin.html' %}
+
+{% block title %}Delete "{{ entry.title }}"?{% endblock %}
+{% block content %}
+		<div class="box">
+			<h2>Delete "{{ entry.title|truncatewords:4 }}"?</h2>
+			<div>
+				<form action="/admin/entry/delete/{{ entry.slug }}" method="post" accept-charset="utf-8">
+					<span class="input">Are you sure?<input type="submit" name="delete_confirmation" value="yes" id="delete_confirmation" /><input type="submit" name="delete_confirmation" value="no" id="delete_confirmation" /><span class="note">Note: entry will be permamently erased</span></span>
+				</form>
+			</div>
+		</div>
+{% endblock %}

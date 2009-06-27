@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block title %}Help:Markup{% endblock %}
+{% block content %}
+<table id="help">
+	<tr>
+		<th class="markup_bbcode">
+			bbcode
+		</th>
+		<th class="markup_output">
+			output
+		</tr>
+	</tr>
+	<tr>
+		<td><code>[b]text[/b]</code></td>
+		<td><strong>text</strong></td>
+	</tr>
+	<tr>
+		<td><code>[i]text[/i]</code></td>
+		<td><em>text</em></td>
+	</tr>
+	<tr>
+		<td><code>[u]text[/u]</code></td>
+		<td><u>text</u></td>
+	</tr>
+	<tr>
+		<td><code>[s]text[/s]</code></td>
+		<td><strike>text</strike></td>
+	</tr>
+	<tr>
+		<td><code>[quote=Robert]text[/quote]</code></td>
+		<td><blockquote><em>Robert</em><br/>text</blockquote></td>
+	</tr>
+	<tr>
+		<td><pre>[code=python]
+def HelloWorld():
+    print "Hello world!"
+HelloWorld() # "Hello world!"
+[/code]</pre></td>
+		<td><div class="code"><pre><span class="k">def</span> <span class="nf">HelloWorld</span><span class="p">()</span>:
+    <span class="k">print</span> <span class="s">&quot;Hello world!&quot;</span>
+<span class="n">HelloWorld</span><span class="p">()</span> <span class="c"># &quot;Hello world!&quot;</span></pre></div></td>
+	</tr>
+	<tr>
+		<td><code>[url=text]text[/url]</code></td>
+		<td><a href="http://text">text</a></td>
+	</tr>
+	<tr>
+		<td><code>[google]text[/google]</code></td>
+		<td><a href="http://google.com/search?q=text">text</a></td>
+	</tr>
+</table>
+{% endblock %}

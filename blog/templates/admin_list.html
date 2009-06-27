@@ -1,0 +1,43 @@
+{% extends 'base_admin.html' %}
+
+{% block title %}Entry list{% endblock %}
+{% block menu %}
+				<li><a href="/">Frontend</a></li>
+				<li><a href="/admin">Backend</a></li>
+				<li><a href="/admin/entry" id="current">Entries</a></li>
+				<li><a href="/admin/settings">Settings</a></li>
+{% endblock %}
+{% block submenu %}
+		<div id="adminmenu">
+			<ul>
+				<li><a href="/admin/entry" id="admin_current">Entries</a></li>
+				<li><a href="/admin/entry/new">New entry</a></li>
+			</ul>
+		</div>
+{% endblock %}
+{% block content %}
+		<div class="post">
+{% if entries %}
+			<table id="generic">
+				<tr>
+					<th class="left">Title</th>
+					<th>Author</th>
+					<th>Created at</th>
+					<th colspan="2">Manage</th>
+				</tr>
+{% for entry in entries %}
+				<tr>
+					<td><a href="/entry/{{ entry.slug }}" title="{{ entry.slug }}">{{ entry.title }}</a></td>
+					<td>{{ entry.author }}</td>
+					<td>{{ entry.published|date:"d.m.Y H:i" }}</td>
+					<td><a href="/admin/entry/edit/{{ entry.slug }}">edit</a></td>
+					<td><a href="/admin/entry/delete/{{ entry.slug }}">delete</a></td>
+				</tr>				
+{% endfor %}
+			</table>
+{% else %}
+			<h2>No entries</h2>
+			<div class="grey">Sorry.</div>
+{% endif %}
+		</div>
+{% endblock %}
