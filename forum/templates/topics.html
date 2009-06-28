@@ -8,7 +8,7 @@
 			<h2>Topics list</h2>
 
 			{% if topics %}
-			<table id="forum">
+			<table id="generic">
 				<tr>
 					<th class="left">Title</th>
 					<th>Replies</th>
@@ -41,7 +41,7 @@
 				<span class="input"><input type="text" name="title" onkeyup="slugify('slug', this.value)" /></span>
 				<span class="input"><input type="text" name="slug" id="slug" /></span>
 				<span class="input"><textarea name="content"></textarea></span>
-				<span class="input"><input type="submit" value="Create"/><span class="note">Note: You can use <a href="http://offline.thepuma.eu/help/markup">bbcode syntax</a> (html is <b>not</b> allowed)</span></span>
+				<span class="input"><input type="submit" value="Create"/><span class="note">Note: You can use <a href="/help/markup">bbcode syntax</a> (html is <b>not</b> allowed)</span></span>
 			</form>
 		</div>
 		{% endif %}

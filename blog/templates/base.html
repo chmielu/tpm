@@ -26,7 +26,11 @@
 			</ul>
 		</div>
 		<div id="submenu">
-			{% if user %}Hi {{ user.nickname }}.{% if admin %} <a href="/admin">Admin</a>{% endif %} <a href="/logout">Logout</a>{% else %}You are not logged in. Please <a href="/login">login</a> with your Google Account.{% endif %}
+			{% if user %}
+			You are logged in as {{ user.nickname }}.{% if admin %} <a href="/admin">Admin</a>{% endif %} <a href="/logout">Logout</a>.
+			{% else %}
+			You are not logged in. Please <a href="/login">login</a> with your Google Account.
+			{% endif %}
 		</div>
 {% block content %}{% endblock %}
 		<div id="footer">

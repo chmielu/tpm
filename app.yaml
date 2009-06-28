@@ -24,5 +24,8 @@ handlers:
 - url: /help.*
   script: blog/help.py
 
+- url: /code
+  script: blog/code.py
+
 - url: /.*
   script: blog/blog.py

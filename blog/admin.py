@@ -2,7 +2,6 @@ import os, sys, datetime, re
 sys.path.append("../")
 from google.appengine.ext import webapp
 from google.appengine.api import users
-from google.appengine.ext.webapp import template
 from google.appengine.ext import db
 from google.appengine.ext.webapp.util import run_wsgi_app
 from utils import *
@@ -84,6 +83,8 @@ class ListEntryPage(TpmRequestHandler):
 		for entry in entries:
 			entry.published = entry.published.replace(tzinfo=TZINFOS['utc']) 
 			entry.published = entry.published.astimezone(CET_tzinfo())
+			entry.updated = entry.updated.replace(tzinfo=TZINFOS['utc']) 
+			entry.updated = entry.updated.astimezone(CET_tzinfo())
 		self.render("admin_list.html", entries=entries)
 
 application = webapp.WSGIApplication([	('/admin', MainPage),

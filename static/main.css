@@ -83,8 +83,8 @@ table#help { background-color: #4F9AB5; font-size: 0.8em; width: 100%; border-co
 table#help th { background-color: #B5463F; padding: 10px; font-size: 2em; }
 table#help td { border: thin solid #ddd; padding: 5px; }
 
-#footer, p.grey, div.grey { background-color: #F6F6F6; color: #666; font-size: 0.8em !important; }
+#footer, div.grey { background-color: #F6F6F6; color: #666; font-size: 0.8em !important; }
 #footer { padding: 3px 10px; margin-top: 30px; }
-#footer a { color: #888; }
+#footer a, div.grey a { color: #888; }
 
 #moardiv { display: none; margin: 0; padding: 0; }

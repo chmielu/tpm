@@ -4,17 +4,11 @@ from google.appengine.ext import webapp
 from google.appengine.ext.webapp.util import run_wsgi_app
 from utils import TpmRequestHandler
 
-class HelpPage(TpmRequestHandler):
+class CodePage(TpmRequestHandler):
 	def get(self):
-		self.render("help_index.html")
+		self.render("code.html")
 
-class MarkupPage(TpmRequestHandler):
-	def get(self):
-		self.render("help_markup.html")
-
-
-application = webapp.WSGIApplication([	('/help', HelpPage),
-										('/help/markup', MarkupPage),
+application = webapp.WSGIApplication([	('/code', CodePage),
 									], debug=True)
 
 def main():

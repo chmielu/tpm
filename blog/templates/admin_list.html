@@ -23,6 +23,7 @@
 					<th class="left">Title</th>
 					<th>Author</th>
 					<th>Created at</th>
+					<th>Updated at</th>
 					<th colspan="2">Manage</th>
 				</tr>
 {% for entry in entries %}
@@ -30,6 +31,7 @@
 					<td><a href="/entry/{{ entry.slug }}" title="{{ entry.slug }}">{{ entry.title }}</a></td>
 					<td>{{ entry.author }}</td>
 					<td>{{ entry.published|date:"d.m.Y H:i" }}</td>
+					<td>{{ entry.updated|date:"d.m.Y H:i" }}</td>
 					<td><a href="/admin/entry/edit/{{ entry.slug }}">edit</a></td>
 					<td><a href="/admin/entry/delete/{{ entry.slug }}">delete</a></td>
 				</tr>

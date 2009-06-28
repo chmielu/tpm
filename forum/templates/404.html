@@ -4,9 +4,9 @@
 {% block content %}
 		<div class="box">
 			<h2>Oops! We've runned out of bubbles!</h2>
-			<p>
+			<div>
 				{% if message %}{{ message }}{% else %}Page you requested could not be found.{% endif %}
-			</p>
-			<p class="grey">{% if referrer %}<a href="{{ referrer }}">Go back</a> &bull; {% endif %}{% if uri %}<a href="{{ uri }}">Go to suggested page</a> &bull; {% endif %}<a href="/">Go to homepage</a></p>
+			</div>
+			<div class="grey">{% if referrer %}<a href="{{ referrer }}">Go back</a> &bull; {% endif %}{% if uri %}<a href="{{ uri }}">Go to suggested page</a> &bull; {% endif %}<a href="/">Go to homepage</a></div>
 		</div>
 {% endblock %}

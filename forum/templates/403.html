@@ -5,9 +5,9 @@
 {% block content %}
 		<div class="box">
 			<h2>You can't enter here, sir!</h2>
-			<p>
+			<div>
 				{% if message %}{{ message }}{% else %}You have attempted to access a page for which you are not authorized.{% endif %}
-			</p>
-			<p class="grey">{% if referrer %}<a href="{{ referrer }}">Go back</a> &bull; {% endif %}<a href="/">Go to homepage</a></p>
+			</div>
+			<div class="grey">{% if referrer %}<a href="{{ referrer }}">Go back</a> &bull; {% endif %}<a href="/">Go to homepage</a></div>
 		</div>
 {% endblock %}

@@ -25,7 +25,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 
 <head>
-	<title>{% block title %}{% if category %}{% if topic %}{{ topic }} &raquo; {% endif %}{{ category }} &laquo; {% endif %}{% endblock %}The Puppets Masters</title>
+	<title>{% block title %}{% if category %}{% if topic %}{{ topic }} &raquo; {% endif %}{{ category }} &laquo; {% endif %}{% endblock %}The Puppets Masters Forum</title>
 	<meta http-equiv="content-type" content="text/html;charset=utf-8" />
 	<meta name="generator" content="Geany 0.18" />
 	<meta name="author" content="Robert Chmielowiec &amp; Krzysztof Socha" />
@@ -42,11 +42,9 @@
 		<div id="menu">
 			<h1>The Puppets Masters</h1>
 			<ul>
-{% block menu %}
 				<li><a href="/">Home</a></li>
 				<li><a href="/forum" id="current">Forum</a></li>
 				<li><a href="/chat">Chat</a></li>
-{% endblock %}
 			</ul>
 		</div>
 
@@ -56,7 +54,6 @@
 			{% else %}
 			You are not logged in. Please <a href="/login">login</a> with your Google Account.
 			{% endif %}
-
 		</div>
 {% block content %}{% endblock %}
 		<div id="footer">
