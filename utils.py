@@ -29,11 +29,12 @@ class TpmRequestHandler(webapp.RequestHandler):
 		path = os.path.join(os.path.dirname(__file__), 'forum/templates/%s' % tmpl)
 		self.response.out.write(template.render(path, template_values))
 
-def error(self, errorcode, message = None, uri = None):
+def error(self, errorcode, message = None, uri = None, referer=None):
 	errorcodes = (400,401,403,404,500)
 	if not errorcode in errorcodes:
 		return False
-	referer = os.environ['HTTP_REFERER']
+	if 'HTTP_REFERER' in os.environ:
+		referer = os.environ['HTTP_REFERER']
 	self.render("%s.html" % errorcode, message=message, uri=uri, referer=referer)
 
 def administrator(method):
