@@ -28,8 +28,9 @@
 	<title>{% block title %}{% if category %}{% if topic %}{{ topic }} &raquo; {% endif %}{{ category }} &laquo; {% endif %}{% endblock %}The Puppets Masters</title>
 	<meta http-equiv="content-type" content="text/html;charset=utf-8" />
 	<meta name="generator" content="Geany 0.18" />
-	<meta name="author" content="Robert Chmielowiec" />
+	<meta name="author" content="Robert Chmielowiec &amp; Krzysztof Socha" />
 	<link rel="stylesheet" type="text/css" href="/static/main.css" />
+	<link rel="stylesheet" type="text/css" href="/static/pygments_merbivore.css" />
 	<link rel="alternate" href="/feed" type="application/atom+xml" title="The Puppets Masters" />
 	<script type="text/javascript" src="/static/utils.js"></script>
 	{% block extrahead %}{% endblock %}
@@ -43,7 +44,7 @@
 			<ul>
 {% block menu %}
 				<li><a href="/">Home</a></li>
-				<li><a href="/forum">Forum</a></li>
+				<li><a href="/forum" id="current">Forum</a></li>
 				<li><a href="/chat">Chat</a></li>
 {% endblock %}
 			</ul>

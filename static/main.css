@@ -48,8 +48,8 @@ span.input .note { font-size: 0.8em; }
 
 div.box { background-color: #4F9AB5; padding: 0 0 1px 0; margin: 30px 0; }
 div.box h2 { background-color: #B5463F; font-size: 1.5em; padding: 10px; margin: 0; }
-div.box p { font-size: 0.9em; padding: 10px; margin: 0 0 -1px 0; }
-div.box p span { font-size: 0.8em; color: #ddd; padding: 3px 0; display: block; }
+div.box p, div.box div { font-size: 0.9em; padding: 10px; margin: 0 0 -1px 0; }
+div.box p span, div.box div span { font-size: 0.8em; color: #ddd; padding: 3px 0; display: block; }
 
 div.post_header { background-color: #FFE9B7; color: #333; font-weight: bold; border: thin solid #ddd; padding: 5px 10px; }
 div.post_header a { color: #B5463F; }
