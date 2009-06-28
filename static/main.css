@@ -74,6 +74,11 @@ table#forum td.last_post { font-size: 0.7em; width: 30%; text-align: center; }
 table#forum td.replies { font-weight: bold; text-align: center; }
 table#forum td span { font-size: 0.85em; color: #999; display: block; }
 
+table#generic { font-size: 0.9em; padding: 10px; width: 100%; }
+table#generic th.left { text-align: left; width: 30%; }
+table#generic td.last_post { font-size: 0.7em; text-align: center; }
+table#generic td.replies { font-weight: bold; text-align: center; }
+
 table#help { background-color: #4F9AB5; font-size: 0.8em; width: 100%; border-collapse: collapse; margin: 30px 0; }
 table#help th { background-color: #B5463F; padding: 10px; font-size: 2em; }
 table#help td { border: thin solid #ddd; padding: 5px; }
