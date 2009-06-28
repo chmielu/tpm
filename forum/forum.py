@@ -51,7 +51,6 @@ class MainPage(TpmRequestHandler):
 			slug = self.request.get("slug")
 		if not slug:
 			error(self, 400, "you must specify slug!");return
-		#if models.Category().get_by_key_name(slug):
 		if models.Category().gql("WHERE slug = :1 LIMIT 1", slug).fetch(1):
 			error(self, 400, "this category slug already exist!");return
 		cat = models.Category(
@@ -60,11 +59,10 @@ class MainPage(TpmRequestHandler):
 			desc = self.request.get("desc")
 		).put()
 
-		self.redirect('/forum/')
+		self.redirect('/forum')
 
 class TopicsPage(TpmRequestHandler):
 	def get(self, category):
-		#cat = models.Category().get_by_key_name(category)
 		cat = models.Category().gql("WHERE slug = :1 LIMIT 1", db.Category(category))
 		if not cat.count():
 			error(self, 404);return
@@ -83,18 +81,17 @@ class TopicsPage(TpmRequestHandler):
 		decorated.sort()
 		decorated.reverse()
 		array = [dict_ for (key, dict_) in decorated]
-		
+
 		slug = category
 		category = models.Category().gql("WHERE slug = :1 LIMIT 1", db.Category(category))[0].title
 		topics = array
-		
+
 		self.forum_render("topics.html", slug=slug, category=category, topics=topics)
 
 	@login_required
 	def post(self, category):
 		if not self.request.get("content") or not self.request.get("title"):
 			error(self, 400, "you must enter a topic title and the content!");return
-		#cat = models.Category().get_by_key_name(category)
 		cat = models.Category().gql("WHERE slug = :1 LIMIT 1", db.Category(category))
 		if not cat.count():
 			error(self, 400, "wrong category id!");return
@@ -104,7 +101,6 @@ class TopicsPage(TpmRequestHandler):
 			slug = self.request.get("slug")
 		if not slug:
 			error(self, 400, "you must specify slug (it must be other then \"admin\")!");return
-		#if models.Post.get_by_key_name(slug):
 		if models.Post.gql("WHERE topic_id = :1 LIMIT 1", slug).fetch(1):
 			error(self, 400, "this topic slug already exist!");return
 		cat = cat[0]
@@ -120,28 +116,23 @@ class TopicsPage(TpmRequestHandler):
 			topic_id = slugify(slug)
 		).put()
 
-		self.redirect("/forum/%s/" % category)
+		self.redirect("/forum/%s" % category)
 
 class PostsPage(TpmRequestHandler):
 	def get(self, category, topic):
-		#cat = models.Category().get_by_key_name(category)
 		cat = models.Category().gql("WHERE slug = :1 LIMIT 1", db.Category(category))
 		if not cat.count():
 			error(self, 404);return
 		posts = models.Post().gql("WHERE topic_id = :1 AND category = :2 ORDER BY date ASC", db.Category(topic), cat[0])
 		if not posts.count():
-			error(self, 404, uri="/%s/" % category);return
+			error(self, 404, uri="/forum/%s" % category);return
 
-		topic = posts[0].title
-		category = cat[0].title
 		slug = {
 			"category": category,
 			"topic": topic
-		},
-		title = "Re: %s" % models.Post().gql("WHERE topic_id = :1 ORDER BY date ASC LIMIT 1", topic)[0].title
-		posts = posts
+		}
 
-		self.forum_render("posts.html", topic=topic, category=category, slug=slug, title=title, posts=posts)
+		self.forum_render("posts.html", topic=posts[0].title, category=cat[0].title, slug=slug, posts=posts)
 
 	@login_required
 	def post(self, category, topic):
@@ -157,7 +148,7 @@ class PostsPage(TpmRequestHandler):
 		if self.request.get("title"):
 			title = self.request.get("title")
 		else:
-			title = "Re: %s" % Post().gql("WHERE topic_id = :1 ORDER BY date ASC LIMIT 1", topic)[0].title
+			title = "Re: %s" % models.Post().gql("WHERE topic_id = :1 ORDER BY date ASC LIMIT 1", topic)[0].title
 
 		cat = cat[0]
 		cat.posts += 1
@@ -171,7 +162,7 @@ class PostsPage(TpmRequestHandler):
 			topic_id = topic
 		).put()
 
-		self.redirect("/forum/%s/%s/" % (category, topic))
+		self.redirect("/forum/%s/%s" % (category, topic))
 
 application = webapp.WSGIApplication(
 	[

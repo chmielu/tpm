@@ -2,7 +2,7 @@
 
 {% block content %}
 		<div class="post_header">
-			<a href="/forum/">The Puppets Masters</a> &raquo; <a href="/forum/{{ slug }}/">{{ category }}</a>
+			<a href="/forum">The Puppets Masters</a> &raquo; <a href="/forum/{{ slug }}">{{ category }}</a>
 		</div>
 		<div class="post">
 			<h2>Topics list</h2>
@@ -13,19 +13,19 @@
 					<th class="left">Title</th>
 					<th>Replies</th>
 					<th>Last post</th>
-					{% if is_admin %}
+				{% if admin %}
 					<th colspan="2">Admin</th>
-					{% endif %}
+				{% endif %}
 				</tr>
 			{% for topic in topics %}
 				<tr>
-					<td><a href="{{ topic.oldest.topic_id }}/">{{ topic.oldest.title|escape }}</a></td>
+					<td><a href="/forum/{{ slug }}/{{ topic.oldest.topic_id }}">{{ topic.oldest.title|escape }}</a></td>
 					<td class="replies">{{ topic.replies }}</td>
 					<td class="last_post">posted {{ topic.newest.date|timesince }} ago<br/> by {{ topic.newest.user }}</td>
-					{% if is_admin %}
-					<td><a href="/forum/admin/edit/topic/{{ slug }}/{{ topic.oldest.topic_id }}/">Edit</a></td>
-					<td><a href="/forum/admin/delete/topic/{{ slug }}/{{ topic.oldest.topic_id }}/">Delete</a></td>
-					{% endif %}
+				{% if admin %}
+					<td><a href="/forum/admin/edit/topic/{{ slug }}/{{ topic.oldest.topic_id }}">Edit</a></td>
+					<td><a href="/forum/admin/delete/topic/{{ slug }}/{{ topic.oldest.topic_id }}">Delete</a></td>
+				{% endif %}
 				</tr>
 			{% endfor %}
 			</table>
@@ -34,10 +34,10 @@
 			{% endif %}
 		</div>
 
-		{% if is_logged %}
+		{% if user %}
 		<div class="post">
 			<h2>Create new topic:</h2>
-			<form action="/forum/{{ slug }}/" method="post">
+			<form action="/forum/{{ slug }}" method="post">
 				<span class="input"><input type="text" name="title" onkeyup="slugify('slug', this.value)" /></span>
 				<span class="input"><input type="text" name="slug" id="slug" /></span>
 				<span class="input"><textarea name="content"></textarea></span>

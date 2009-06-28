@@ -8,12 +8,12 @@ import postmarkup
 
 ADMINS = [ "banana@thepuma.eu", "robert@chmielowiec.net" ]
 
-class TpmRequestHandler(webapp.RequestHandler):    
+class TpmRequestHandler(webapp.RequestHandler):
 	def __init__(self,**kw):
-		webapp.RequestHandler.__init__(self, kw)
-    
+		webapp.RequestHandler.__init__(self, **kw)
+
 	def render(self, tmpl, *args, **kw):
-		template_values = dict(kw)
+		template_values = dict(**kw)
 		template_values.update({'user': users.get_current_user()})
 		template_values.update({'users': users})
 		template_values.update({'admin': str(users.get_current_user()) in ADMINS})
@@ -21,7 +21,7 @@ class TpmRequestHandler(webapp.RequestHandler):
 		self.response.out.write(template.render(path, template_values))
 
 	def forum_render(self, tmpl, *args, **kw):
-		template_values = dict(kw)
+		template_values = dict(**kw)
 		template_values.update({'user': users.get_current_user()})
 		template_values.update({'users': users})
 		template_values.update({'admin': str(users.get_current_user()) in ADMINS})

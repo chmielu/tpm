@@ -4,7 +4,7 @@
 		<div class="post_header">Edit topic:</div>
 		<div class="post">
 			<h2>Warning: You can NOT undo this changes!</h2>
-			<form action="/forum/admin/edit/topic/{{ slug.category }}/{{ slug.topic }}/" method="post">
+			<form action="/forum/admin/edit/topic/{{ slug.category }}/{{ slug.topic }}" method="post">
 				<span class="input"><input type="text" name="title" onkeyup="slugify('slug', this.value)" value="{{ title|escape }}" /></span>
 				<span class="input"><input type="text" name="slug" id="slug" value="{{ slug.topic }}" /></span>
 				<span class="input"><textarea name="content">{{ content }}</textarea></span>

@@ -30,7 +30,7 @@
 	<meta name="generator" content="Geany 0.18" />
 	<meta name="author" content="Robert Chmielowiec" />
 	<link rel="stylesheet" type="text/css" href="/static/main.css" />
-	<link rel="alternate" href="feed://thepuma.eu/feed" type="application/atom+xml" title="The Puppets Masters" />
+	<link rel="alternate" href="/feed" type="application/atom+xml" title="The Puppets Masters" />
 	<script type="text/javascript" src="/static/utils.js"></script>
 	{% block extrahead %}{% endblock %}
 
@@ -42,18 +42,18 @@
 			<h1>The Puppets Masters</h1>
 			<ul>
 {% block menu %}
-				<li><a href="http://offline.thepuma.eu">Home</a></li>
-				<li><a href="/forum/">Forum</a></li>
-				<li><a href="http://offline.thepuma.eu/chat">Chat</a></li>
+				<li><a href="/">Home</a></li>
+				<li><a href="/forum">Forum</a></li>
+				<li><a href="/chat">Chat</a></li>
 {% endblock %}
 			</ul>
 		</div>
 
 		<div id="submenu">
-			{% if login.user %}
-			You are logged in as {{ login.user.nickname }}. <a href="{{ login.url }}">Logout</a>.
+			{% if user %}
+			You are logged in as {{ user.nickname }}. <a href="/logout">Logout</a>.
 			{% else %}
-			You are not logged in. Please <a href="{{ login.url }}">login</a> with your Google Account.
+			You are not logged in. Please <a href="/login">login</a> with your Google Account.
 			{% endif %}
 
 		</div>

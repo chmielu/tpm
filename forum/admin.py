@@ -41,7 +41,7 @@ class DeleteCategoryPage(TpmRequestHandler):
 		cat = models.Category().gql("WHERE slug = :1 LIMIT 1", db.Category(category))
 		if not cat.count():
 			error(self, 404);return
-		
+
 		title = cat[0].title
 		slug = category
 		self.forum_render("delete_category.html", title=title, slug=slug)
@@ -49,7 +49,7 @@ class DeleteCategoryPage(TpmRequestHandler):
 	@administrator
 	def post(self, category):
 		if self.request.get("delete_confirmation") == "no":
-			self.redirect("/forum/")
+			self.redirect("/forum")
 			return
 		elif self.request.get("delete_confirmation") == "yes":
 			cat = models.Category().gql("WHERE slug = :1 LIMIT 1", db.Category(category))
@@ -62,7 +62,7 @@ class DeleteCategoryPage(TpmRequestHandler):
 				post.delete()
 			cat[0].delete()
 
-			self.redirect("/forum/")
+			self.redirect("/forum")
 
 class DeleteTopicPage(TpmRequestHandler):
 	@administrator
@@ -72,7 +72,7 @@ class DeleteTopicPage(TpmRequestHandler):
 			error(self, 404);return
 		posts = models.Post().gql("WHERE topic_id = :1 AND category = :2 ORDER BY date ASC", db.Category(topic), cat[0])
 		if not posts.count():
-			error(self, 404, uri="/%s/" % category);return
+			error(self, 404, uri="/forum/%s" % category);return
 
 		title = posts[0].title
 		slug = {
@@ -84,8 +84,7 @@ class DeleteTopicPage(TpmRequestHandler):
 	@administrator
 	def post(self, category, topic):
 		if self.request.get("delete_confirmation") == "no":
-			self.redirect("/forum/%s/" % category)
-			return
+			self.redirect("/forum/%s" % category);return
 		elif self.request.get("delete_confirmation") == "yes":
 			cat = models.Category().gql("WHERE slug = :1 LIMIT 1", db.Category(category))
 			if not cat.count():
@@ -101,7 +100,7 @@ class DeleteTopicPage(TpmRequestHandler):
 				post.delete()
 			cat.put()
 
-			self.redirect("/forum/%s/" % category)
+			self.redirect("/forum/%s" % category)
 
 class DeletePostPage(TpmRequestHandler):
 	@administrator
@@ -110,12 +109,9 @@ class DeletePostPage(TpmRequestHandler):
 			key = db.Key(slug)
 		except db.BadKeyError:
 			error(self, 400, "bad key id!");return
-
 		post = models.Post.get(key)
-
 		if not post:
 			error(self, 400, "wrong post id!");return
-
 		title = post.title
 
 		self.forum_render("delete_posts.html", title=title, slug=slug)
@@ -123,8 +119,7 @@ class DeletePostPage(TpmRequestHandler):
 	@administrator
 	def post(self, slug):
 		if self.request.get("delete_confirmation") == "no":
-			self.redirect("/")
-			return
+			self.redirect("/forum");return
 		elif self.request.get("delete_confirmation") == "yes":
 			try:
 				key = db.Key(slug)
@@ -140,18 +135,18 @@ class DeletePostPage(TpmRequestHandler):
 			post.category.put()
 
 			post.delete()
-			self.redirect('/forum/')
+			self.redirect('/forum')
 
 class EditCategoryPage(TpmRequestHandler):
-	@administator
+	@administrator
 	def get(self, category):
 		cat = models.Category().gql("WHERE slug = :1 LIMIT 1", db.Category(category))
 		if not cat.count():
 			error(self, 404);return
 
-			title = cat[0].title
-			slug = category
-			desc = cat[0].desc
+		title = cat[0].title
+		slug = category
+		desc = cat[0].desc
 		self.forum_render("edit_category.html", title=title, slug=slug, desc=desc)
 
 	@administrator
@@ -177,7 +172,7 @@ class EditCategoryPage(TpmRequestHandler):
 		cat.desc = self.request.get("desc")
 		cat.put()
 
-		self.redirect("/")
+		self.redirect("/forum")
 
 class EditTopicPage(TpmRequestHandler):
 	@administrator
@@ -187,7 +182,7 @@ class EditTopicPage(TpmRequestHandler):
 			error(self, 404);return
 		posts = models.Post().gql("WHERE topic_id = :1 AND category = :2 ORDER BY date ASC", db.Category(topic), cat[0])
 		if not posts.count():
-			error(self, 404, uri="/forum/%s/" % category);return
+			error(self, 404, uri="/forum/%s" % category);return
 
 		title = posts[0].title
 		content = posts[0].content
@@ -226,7 +221,7 @@ class EditTopicPage(TpmRequestHandler):
 			post.topic_id = slug
 			post.put()
 
-		self.redirect("/forum/%s/" % category)
+		self.redirect("/forum/%s" % category)
 
 class EditPostPage(TpmRequestHandler):
 	@administrator
@@ -244,7 +239,7 @@ class EditPostPage(TpmRequestHandler):
 		title = post.title
 		content = post.content
 		slug = slug
-		
+
 		self.forum_render("edit_posts.html", title=title, content=content, slug=slug)
 
 	@administrator
@@ -265,7 +260,7 @@ class EditPostPage(TpmRequestHandler):
 		post.content_html = re.sub("<br />$", "", to_html(self.request.get("content")))
 		post.put()
 
-		self.redirect('/forum/')
+		self.redirect('/forum')
 
 application = webapp.WSGIApplication(
 	[
