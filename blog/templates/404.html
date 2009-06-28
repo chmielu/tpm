@@ -8,6 +8,6 @@
 			<div>
 				{% if message %}{{ message }}{% else %}Page you requested could not be found.{% endif %}
 			</div>
-			<div class="grey">{% if referrer %}<a href="{{ referrer }}">Go back</a> &bull; {% endif %}{% if uri %}<a href="{{ uri }}">Go to suggested page</a> &bull; {% endif %}<a href="/">Go to homepage</a></div>
+			<div class="grey">{% if referer %}<a href="{{ referer }}">Go back</a> &bull; {% endif %}{% if uri %}<a href="{{ uri }}">Go to suggested page</a> &bull; {% endif %}<a href="/">Go to homepage</a></div>
 		</div>
 {% endblock %}
