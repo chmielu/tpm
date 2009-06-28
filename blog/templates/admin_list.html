@@ -8,7 +8,7 @@
 				<li><a href="/admin/settings">Settings</a></li>
 {% endblock %}
 {% block submenu %}
-		<div id="adminmenu">
+		<div id="submenu">
 			<ul>
 				<li><a href="/admin/entry" id="admin_current">Entries</a></li>
 				<li><a href="/admin/entry/new">New entry</a></li>
@@ -32,7 +32,7 @@
 					<td>{{ entry.published|date:"d.m.Y H:i" }}</td>
 					<td><a href="/admin/entry/edit/{{ entry.slug }}">edit</a></td>
 					<td><a href="/admin/entry/delete/{{ entry.slug }}">delete</a></td>
-				</tr>				
+				</tr>
 {% endfor %}
 			</table>
 {% else %}
