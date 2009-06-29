@@ -68,6 +68,8 @@ div.post span.input { text-align: center; font-size: 0.8em; margin: 5px 0; paddi
 div.post span.input input, div.post span.input textarea { font-size: 1.2em; color: #666; background-color: #f6f6f6; border: thin solid #ddd; width: 98%; }
 div.post span.input input:hover, div.post span.input textarea:hover { background-color: #fcfcfc; }
 
+div.withborder { border-top: thin solid #ddd !important; }
+
 table#forum { font-size: 0.9em; padding: 10px; width: 100%; }
 table#forum th.left { text-align: left; width: 70%; }
 table#forum td.last_post { font-size: 0.7em; width: 30%; text-align: center; }
@@ -75,7 +77,8 @@ table#forum td.replies { font-weight: bold; text-align: center; }
 table#forum td span { font-size: 0.85em; color: #999; display: block; }
 
 table#generic { font-size: 0.9em; padding: 10px; width: 100%; }
-table#generic th.left { text-align: left; width: 30%; }
+table#generic * { text-align: center; }
+table#generic .left { text-align: left; width: 20%; }
 table#generic td.last_post { font-size: 0.7em; text-align: center; }
 table#generic td.replies { font-weight: bold; text-align: center; }
 
