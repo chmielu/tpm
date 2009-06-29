@@ -41,7 +41,7 @@ span.input .note { font-size: 0.8em; }
 #menu * { padding: 0 ; margin: 0; }
 #menu h1 { font-size: 3em; text-align: center; padding: 10px 0 20px 0; }
 #menu li { color: #333; display: inline; }
-#menu #current { font-weight: bold;}
+#menu #current, #submenu #subcurrent { font-weight: bold;}
 
 #submenu { background-color: #f6f6f6; color: #666; font-size: 0.7em; margin-bottom: 30px; }
 #submenu a { color: #000; }

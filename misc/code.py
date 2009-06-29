@@ -6,7 +6,7 @@ from utils import TpmRequestHandler
 
 class CodePage(TpmRequestHandler):
 	def get(self):
-		self.render("code.html")
+		self.misc_render("code.html")
 
 application = webapp.WSGIApplication([	('/code', CodePage),
 									], debug=True)

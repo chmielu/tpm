@@ -1,0 +1,41 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+	<title>{% block title %}Example{% endblock %} &laquo; The Puppets Masters</title>
+	<meta http-equiv="content-type" content="text/html;charset=utf-8" />
+	<meta name="generator" content="Geany 0.18" />
+	<meta name="author" content="Robert Chmielowiec &amp; Krzysztof Socha" />
+	<link rel="stylesheet" type="text/css" href="/static/main.css" />
+	<link rel="stylesheet" type="text/css" href="/static/pygments_merbivore.css" />
+	<link rel="alternate" href="feed://cave.thepuma.eu/feed" type="application/atom+xml" title="The Puppets Masters" />
+	{% block extrahead %}{% endblock %}
+</head>
+
+<body>
+	<div id="page">
+		<div id="menu">
+			<h1>The Puppets Masters</h1>
+			<ul>
+{% block menu %}
+				<li><a href="/">Home</a></li>
+				<li><a href="/forum">Forum</a></li>
+				<li><a href="/chat">Chat</a></li>
+{% endblock %}
+			</ul>
+		</div>
+		<div id="submenu">
+			{% if user %}
+			You are logged in as {{ user.nickname }}.{% if admin %} <a href="/admin">Admin</a>{% endif %} <a href="/logout">Logout</a>.
+			{% else %}
+			You are not logged in. Please <a href="/login">login</a> with your Google Account.
+			{% endif %}
+		</div>
+{% block content %}{% endblock %}
+		<div id="footer">
+			<p>copyright 2009 © <a href="http://ksocha.com">Krzysztof Socha</a> and <a href="http://robert.chmielowiec.net">Robert Chmielowiec</a><br />for <strong><a href="http://thepuma.eu">The Puppets Masters</a></strong> - <a href="http://code.google.com/appengine">gae</a> powered</p>
+		</div>
+	</div>
+</body>
+</html>

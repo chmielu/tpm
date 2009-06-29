@@ -6,11 +6,11 @@ from utils import TpmRequestHandler
 
 class HelpPage(TpmRequestHandler):
 	def get(self):
-		self.render("help_index.html")
+		self.misc_render("help_index.html")
 
 class MarkupPage(TpmRequestHandler):
 	def get(self):
-		self.render("help_markup.html")
+		self.misc_render("help_markup.html")
 
 
 application = webapp.WSGIApplication([	('/help', HelpPage),

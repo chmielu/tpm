@@ -22,10 +22,10 @@ handlers:
   script: forum/forum.py
 
 - url: /help.*
-  script: blog/help.py
+  script: misc/help.py
 
 - url: /code
-  script: blog/code.py
+  script: misc/code.py
 
 - url: /.*
   script: blog/blog.py

@@ -13,21 +13,19 @@ class TpmRequestHandler(webapp.RequestHandler):
 	def __init__(self,**kw):
 		webapp.RequestHandler.__init__(self, **kw)
 
-	def render(self, tmpl, *args, **kw):
+	def render(self, tmpl, tmplprefix="blog/", *args, **kw):
 		template_values = dict(**kw)
 		template_values.update({'user': users.get_current_user()})
 		template_values.update({'users': users})
 		template_values.update({'admin': str(users.get_current_user()) in ADMINS})
-		path = os.path.join(os.path.dirname(__file__), 'blog/templates/%s' % tmpl)
+		path = os.path.join(os.path.dirname(__file__), '%stemplates/%s' % (tmplprefix, tmpl))
 		self.response.out.write(template.render(path, template_values))
 
 	def forum_render(self, tmpl, *args, **kw):
-		template_values = dict(**kw)
-		template_values.update({'user': users.get_current_user()})
-		template_values.update({'users': users})
-		template_values.update({'admin': str(users.get_current_user()) in ADMINS})
-		path = os.path.join(os.path.dirname(__file__), 'forum/templates/%s' % tmpl)
-		self.response.out.write(template.render(path, template_values))
+		self.render(tmpl, "forum/", *args, **kw)
+
+	def misc_render(self, tmpl, *args, **kw):
+		self.render(tmpl, "misc/", *args, **kw)
 
 def error(self, errorcode, message = None, uri = None, referer=None):
 	errorcodes = (400,401,403,404,500)
