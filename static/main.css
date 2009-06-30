@@ -20,7 +20,8 @@
  */
 
 
-#page { font-size: 14px; font-family: Verdana; color: #fff; margin: 30px auto 0 auto; width: 823px; }
+div#page { font-size: 14px; font-family: Verdana; color: #fff; margin: 30px auto 0 auto; width: 823px; }
+div.blog { width: 623px !important; }
 
 a { color: #ddd; text-decoration: none; }
 a:hover { color: #fff; text-decoration: underline; }
