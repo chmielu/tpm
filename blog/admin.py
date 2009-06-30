@@ -81,10 +81,8 @@ class ListEntryPage(TpmRequestHandler):
 	def get(self):
 		entries = db.Query(models.Entry).order('-published').fetch(limit=10)
 		for entry in entries:
-			entry.published = entry.published.replace(tzinfo=TZINFOS['utc']) 
-			entry.published = entry.published.astimezone(CET_tzinfo())
-			entry.updated = entry.updated.replace(tzinfo=TZINFOS['utc']) 
-			entry.updated = entry.updated.astimezone(CET_tzinfo())
+			if entry.updated > entry.published+datetime.timedelta(seconds=30):
+				entry.it_was_updated = True
 		self.render("admin_list.html", entries=entries)
 
 application = webapp.WSGIApplication([	('/admin', MainPage),

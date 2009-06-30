@@ -11,9 +11,6 @@ handlers:
   script: blog/admin.py
   login: required
 
-- url: /blog/help.*
-  script: blog/help.py
-
 - url: /forum/admin.*
   script: forum/admin.py
   login: required
@@ -21,11 +18,11 @@ handlers:
 - url: /forum.*
   script: forum/forum.py
 
-- url: /help.*
-  script: misc/help.py
+- url: /entry.*
+  script: blog/blog.py
 
-- url: /code
-  script: misc/code.py
+- url: /
+  script: blog/blog.py
 
 - url: /.*
-  script: blog/blog.py
+  script: misc/misc.py

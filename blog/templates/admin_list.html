@@ -32,7 +32,7 @@
 					<td class="left"><a href="/entry/{{ entry.slug }}" title="{{ entry.slug }}">{{ entry.title }}</a></td>
 					<td>{{ entry.author }}</td>
 					<td>{{ entry.published|date:"d.m.Y H:i" }}</td>
-					<td>{{ entry.updated|date:"d.m.Y H:i" }}</td>
+					<td>{% if entry.it_was_updated %}{{ entry.updated|date:"d.m.Y H:i" }}{% else %}Never{% endif %}</td>
 					<td><a href="/admin/entry/edit/{{ entry.slug }}">edit</a></td>
 					<td><a href="/admin/entry/delete/{{ entry.slug }}">delete</a></td>
 				</tr>

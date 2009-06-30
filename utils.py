@@ -33,7 +33,7 @@ def error(self, errorcode, message = None, uri = None, referer=None):
 		return False
 	if 'HTTP_REFERER' in os.environ:
 		referer = os.environ['HTTP_REFERER']
-	self.render("%s.html" % errorcode, message=message, uri=uri, referer=referer)
+	self.misc_render("%s.html" % errorcode, message=message, uri=uri, referer=referer)
 
 def administrator(method):
     @functools.wraps(method)
@@ -73,41 +73,3 @@ def to_html(body):
 	postmarkup.LinkTag.annotate_link = lambda self, domain: u""
 	body_html = postmarkup.render_bbcode(body)
 	return body_html
-
-class UtcTzinfo(datetime.tzinfo):
-  def utcoffset(self, dt): return datetime.timedelta(0)
-  def dst(self, dt): return datetime.timedelta(0)
-  def tzname(self, dt): return 'UTC'
-  def olsen_name(self): return 'UTC'
-
-TZINFOS = {
-  'utc': UtcTzinfo(),
-}
-
-class CET_tzinfo(datetime.tzinfo):
-	"""Implementation of the Central European timezone."""
-	def utcoffset(self, dt):
-		return datetime.timedelta(hours=+1) + self.dst(dt)
-
-	def _FirstSunday(self, dt):
-		"""First Sunday on or after dt."""
-		return dt + datetime.timedelta(days=(6-dt.weekday()))
-
-	def dst(self, dt):
-		# 2 am on the last Sunday in March
-		dst_start = self._FirstSunday(datetime.datetime(dt.year, 3, 25, 2))
-		# 1 am on the last Sunday in October
-		dst_end = self._FirstSunday(datetime.datetime(dt.year, 10, 25, 1))
-
-		if dst_start <= dt.replace(tzinfo=None) < dst_end:
-			return datetime.timedelta(hours=1)
-		else:
-			return datetime.timedelta(hours=0)
-
-	def tzname(self, dt):
-		if self.dst(dt) == datetime.timedelta(hours=0):
-			return "CET+01CET"
-		else:
-			return "CEST+02CET"
-
-	def olsen_name(self): return 'Europe/Warsaw'
