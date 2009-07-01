@@ -74,7 +74,7 @@ class DeleteEntryPage(TpmRequestHandler):
 		delete = self.request.get("delete_confirmation")
 		if delete and delete == 'yes':
 			entry.delete()
-		self.redirect('/admin/list')
+		self.redirect('/admin/entry/list')
 
 class ListEntryPage(TpmRequestHandler):
 	@administrator

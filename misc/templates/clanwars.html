@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+
+{% block title %}Clanwars{% endblock %}
+{% block menu %}
+				<li><a href="/">Home</a></li>
+				<li id="current"><a href="/clanwars">Clanwars</a></li>
+				<li><a href="/forum">Forum</a></li>
+				<li><a href="/chat">Chat</a></li>
+{% endblock %}
+{% block content %}
+		<div class="post_header">
+			This is preview. All data are fake.
+		</div>
+		<div class="post withborder">
+			<h2>Clanwars</h2>
+			<table id="generic">
+				<tr>
+					<th></th>
+					<th colspan="3">Result</th>
+					<th>Opponent</th>
+					<th>Date</th>
+					<th>GT</th>
+					<th>Map</th>
+					<th>Teams</th>
+					<th>Played for</th>
+					<th>Forum (replies)</th>
+				</tr>
+{% for clanwar in clanwars %}
+				<!-- <tr>
+					<td>ThePuMa</td>
+					<td>&laquo;</td>
+					<td class="win">6-0</td>
+					<td>&nbsp;</td>
+					<td>{{ clanwar.cwinfo.opponent }}</td>
+					<td>{{ clanwar.oldest.date|date:"d-m-y" }}</td>
+					<td>{% if clanwar.cwinfo.gametype %}{{ clanwar.cwinfo.gametype }}{% else %}CTF{% endif %}</td>
+					<td>{% if clanwar.cwinfo.map %}{{ clanwar.cwinfo.map }}{% else %}N/A{% endif %}</td>
+					<td>{% if clanwar.cwinfo.teams %}{{ clanwar.cwinfo.teams }}{% else %}N/A{% endif %}</td>
+					<td>{% if clanwar.cwinfo.cup %}{{ clanwar.cwinfo.cup }}{% else %}fun{% endif %}</td>
+					<td><a href="/forum/{{ slug }}/{{ clanwar.oldest.topic_id }}">discussion</a> ({% if clanwar.replies %}{{ clanwar.replies }}{% else %}-{% endif %})</td>
+				</tr> -->
+{% endfor %}
+				<tr>
+					<td>ThePuMa</td>
+					<td>&laquo;</td>
+					<td class="win">6-0</td>
+					<td>&nbsp;</td>
+					<td>DAVBUS</td>
+					<td>01-07-09</td>
+					<td>CTF</td>
+					<td>ctf1</td>
+					<td>2on2</td>
+					<td>ESL</td>
+					<td><a href="/this_is_preview">discussion</a> (-)</td>
+				</tr>
+				<tr>
+					<td>ThePuMa</td>
+					<td>&lsaquo;</td>
+					<td class="draw">6-6</td>
+					<td>&rsaquo;</td>
+					<td><b>I</b>nsta <b>S</b>nipers</td>
+					<td>01-07-09</td>
+					<td>iCTF</td>
+					<td>ctf3</td>
+					<td>2on2</td>
+					<td>mani! (40$)</td>
+					<td><a href="/this_is_preview">discussion</a> (-)</td>
+				</tr>
+				<tr>
+					<td>ThePuMa</td>
+					<td>&nbsp;</td>
+					<td class="lost">0-6</td>
+					<td>&raquo;</td>
+					<td>DUMB</td>
+					<td>01-07-09</td>
+					<td>CTF</td>
+					<td>ctf2</td>
+					<td>6on6</td>
+					<td>fun</td>
+					<td><a href="/this_is_preview">discussion</a> (-)</td>
+				</tr>
+			</table>
+		</div>
+{% endblock %}

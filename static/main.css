@@ -18,45 +18,44 @@
  *      Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  *      MA 02110-1301, USA.
  */
- 
- 
+
 div#page { font-size: 14px; font-family: Verdana; color: #fff; margin: 30px auto 0 auto; width: 823px; }
 div.blog { width: 623px !important; }
- 
+
 a { color: #ddd; text-decoration: none; }
 a:hover { color: #fff; text-decoration: underline; }
- 
+
 ul, li { font-size: 0.89em; }
- 
+
 blockquote { background-color: #f6f6f6; color: #333; border: thin solid #ccc; margin: 10px; padding: 10px; }
 blockquote em { font-weight: bold; font-style: normal; padding-bottom: 5px; display: block; }
 blockquote em:after { content: " wrote:"; }
- 
+
 span.input { text-align: center; font-size: 0.98em; margin: 5px 0; padding: 0; width: 100%; display: block; }
 span.input input, span.input textarea { font-size: 20px; color: #666; background-color: #f6f6f6; border: 0; width: 98%; }
 span.input textarea { font-size: 0.88em; padding: inherit; height: 150px }
 span.input input:hover, span.input textarea:hover { background-color: #fcfcfc; }
 span.input .note { font-size: 0.8em; }
- 
+
 #menu, #submenu { background-color: #9E5C7A; font-size: 0.8em; padding: 5px 10px; }
 #menu * { padding: 0 ; margin: 0; }
 #menu h1 { font-size: 3em; text-align: center; padding: 10px 0 20px 0; }
 #menu li { color: #333; display: inline; }
 #menu #current, #submenu #subcurrent { font-weight: bold;}
- 
+
 #submenu { background-color: #f6f6f6; color: #666; font-size: 0.7em; margin-bottom: 30px; }
 #submenu a { color: #000; }
 #submenu ul { padding: 0; margin: 0; }
 #submenu li { display: inline; font-size: 1.1em; }
- 
+
 div.box { background-color: #4F9AB5; padding: 0 0 1px 0; margin: 30px 0; }
 div.box h2 { background-color: #B5463F; font-size: 1.5em; padding: 10px; margin: 0; }
 div.box p, div.box div { font-size: 0.9em; padding: 10px; margin: 0 0 -1px 0; }
-div.box p span, div.box div span { font-size: 0.8em; color: #ddd; padding: 3px 0; display: block; }
- 
+/*div.box p span, div.box div span { font-size: 0.8em; color: #ddd; padding: 3px 0; display: block; }*/
+
 div.post_header { background-color: #FFE9B7; color: #333; font-weight: bold; border: thin solid #ddd; padding: 5px 10px; }
 div.post_header a { color: #B5463F; }
- 
+
 div.post { background-color: #f6f6f6; border: thin solid #ddd; border-top: 0; color: #333; padding: 0; margin: 0; }
 div.post h2 { background-color: #eeeeef; border-top: thin solid #fff; border-bottom: thin dashed #ddd; font-size: 0.7em; padding: 5px 10px; margin: 0; }
 div.post p { font-size: 0.9em; padding: 20px 10px; margin: 0; text-align: justify; }
@@ -68,27 +67,31 @@ div.post td, div.post th { font-size: 0.9em }
 div.post span.input { text-align: center; font-size: 0.8em; margin: 5px 0; padding: 0; width: 100%; display: block; }
 div.post span.input input, div.post span.input textarea { font-size: 1.2em; color: #666; background-color: #f6f6f6; border: thin solid #ddd; width: 98%; }
 div.post span.input input:hover, div.post span.input textarea:hover { background-color: #fcfcfc; }
- 
+
 div.withborder { border-top: thin solid #ddd !important; }
- 
+
 table#forum { font-size: 0.9em; padding: 10px; width: 100%; }
 table#forum th.left { text-align: left; width: 70%; }
 table#forum td.last_post { font-size: 0.7em; width: 30%; text-align: center; }
 table#forum td.replies { font-weight: bold; text-align: center; }
 table#forum td span { font-size: 0.85em; color: #999; display: block; }
- 
+
 table#generic { font-size: 0.9em; padding: 10px; width: 100%; }
 table#generic * { text-align: center; }
 table#generic .left { text-align: left; width: 20%; }
 table#generic td.last_post { font-size: 0.7em; text-align: center; }
 table#generic td.replies { font-weight: bold; text-align: center; }
- 
+
 table#help { background-color: #4F9AB5; font-size: 0.8em; width: 100%; border-collapse: collapse; margin: 30px 0; }
 table#help th { background-color: #B5463F; padding: 10px; font-size: 2em; }
 table#help td { border: thin solid #ddd; padding: 5px; }
- 
+
+.draw {background-color:#ff0; color:#000;}
+.win {background-color:#080; color:#fff;}
+.lost {background-color:#800; color:#fff;}
+
 #footer, div.grey { background-color: #F6F6F6; color: #666; font-size: 0.8em !important; }
 #footer { padding: 3px 10px; margin-top: 30px; }
 #footer a, div.grey a { color: #888; }
- 
+
 #moardiv { display: none; margin: 0; padding: 0; }
