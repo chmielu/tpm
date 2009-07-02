@@ -16,10 +16,10 @@
 			<table id="generic">
 				<tr>
 					<th></th>
-					<th colspan="3">Result</th>
+					<th>Result</th>
 					<th>Opponent</th>
 					<th>Date</th>
-					<th>GT</th>
+					<th><abbr title="Gametype">GT</abbr></th>
 					<th>Map</th>
 					<th>Teams</th>
 					<th>Played for</th>
@@ -28,9 +28,7 @@
 {% for clanwar in clanwars %}
 				<!-- <tr>
 					<td>ThePuMa</td>
-					<td>&laquo;</td>
 					<td class="win">6-0</td>
-					<td>&nbsp;</td>
 					<td>{{ clanwar.cwinfo.opponent }}</td>
 					<td>{{ clanwar.oldest.date|date:"d-m-y" }}</td>
 					<td>{% if clanwar.cwinfo.gametype %}{{ clanwar.cwinfo.gametype }}{% else %}CTF{% endif %}</td>
@@ -42,9 +40,7 @@
 {% endfor %}
 				<tr>
 					<td>ThePuMa</td>
-					<td>&laquo;</td>
-					<td class="win">6-0</td>
-					<td>&nbsp;</td>
+					<td class="win">1012:0104</td>
 					<td>DAVBUS</td>
 					<td>01-07-09</td>
 					<td>CTF</td>
@@ -55,9 +51,7 @@
 				</tr>
 				<tr>
 					<td>ThePuMa</td>
-					<td>&lsaquo;</td>
-					<td class="draw">6-6</td>
-					<td>&rsaquo;</td>
+					<td class="draw">0505:0505</td>
 					<td><b>I</b>nsta <b>S</b>nipers</td>
 					<td>01-07-09</td>
 					<td>iCTF</td>
@@ -68,9 +62,7 @@
 				</tr>
 				<tr>
 					<td>ThePuMa</td>
-					<td>&nbsp;</td>
-					<td class="lost">0-6</td>
-					<td>&raquo;</td>
+					<td class="lost">0512:0517</td>
 					<td>DUMB</td>
 					<td>01-07-09</td>
 					<td>CTF</td>
