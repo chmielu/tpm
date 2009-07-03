@@ -1,4 +1,4 @@
-import os, sys
+import re, sys, os
 sys.path.append("../")
 from google.appengine.api import users
 from google.appengine.ext import db
@@ -80,7 +80,9 @@ class WarsPage(TpmRequestHandler):
 					"opponent": splitted[0].split()[2],
 					"score": {
 						"class": (int(cmp[0]) > int(cmp[1])) and "win" or (cmp[0] == cmp[1]) and "draw" or "lost",
-						"int": "%04d:%04d" % (int(cmp[0]), int(cmp[1])),
+						"int": re.sub(r"(0+)",
+							r"<span class='leadingzeros'>\1</span>",
+							"%04d:%04d" % (int(cmp[0]), int(cmp[1]))),
 					},
 					"gametype": splitted[2],
 					"map": "wip",
