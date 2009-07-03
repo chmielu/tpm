@@ -26,9 +26,9 @@
 					<th>Forum (replies)</th>
 				</tr>
 {% for clanwar in clanwars %}
-				<!-- <tr>
+				<tr>
 					<td>ThePuMa</td>
-					<td class="win">6-0</td>
+					<td class="{{ clanwar.cwinfo.score.class }}">{{ clanwar.cwinfo.score.int }}</td>
 					<td>{{ clanwar.cwinfo.opponent }}</td>
 					<td>{{ clanwar.oldest.date|date:"d-m-y" }}</td>
 					<td>{% if clanwar.cwinfo.gametype %}{{ clanwar.cwinfo.gametype }}{% else %}CTF{% endif %}</td>
@@ -36,7 +36,7 @@
 					<td>{% if clanwar.cwinfo.teams %}{{ clanwar.cwinfo.teams }}{% else %}N/A{% endif %}</td>
 					<td>{% if clanwar.cwinfo.cup %}{{ clanwar.cwinfo.cup }}{% else %}fun{% endif %}</td>
 					<td><a href="/forum/{{ slug }}/{{ clanwar.oldest.topic_id }}">discussion</a> ({% if clanwar.replies %}{{ clanwar.replies }}{% else %}-{% endif %})</td>
-				</tr> -->
+				</tr>
 {% endfor %}
 				<tr>
 					<td>ThePuMa</td>

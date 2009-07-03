@@ -53,44 +53,63 @@ class LogoutHandler(TpmRequestHandler):
     def get(self):
         user = users.get_current_user()
         if user:
-            self.redirect(users.create_logout_url('/'))
+            self.redirect(users.create_logout_url(os.environ["HTTP_REFERER"]))
         else:
             self.redirect('/')
 
 class WarsPage(TpmRequestHandler):
 	def get(self):
 		category = "clanwars"
-		# cat = models.Category().gql("WHERE slug = :1 LIMIT 1", db.Category("clanwars"))
 		cat = db.Query(models.Category).filter("slug =", db.Category(category)).get()
 		if not cat:
 			error(self, 404);return
-		# clanwars = models.Post().gql("WHERE category = :1 ORDER BY date ASC", cat[0])
 		clanwars = db.Query(models.Post).filter("category =", cat).order("-date").fetch(limit=20)
 		array = {}
 		for topic in clanwars:
 			if not array.has_key(topic.topic_id):
-				array[topic.topic_id] = {"oldest": topic, "newest": "", "replies": 0}
+				array[topic.topic_id] = {
+					"oldest": topic,
+					"replies": 0
+				}
 			else:
 				array[topic.topic_id]["replies"] += 1
-			array[topic.topic_id]["newest"] = topic
+
+			splitted = topic.title.split(" - ")
+			cmp = splitted[1].split(':')
+
+			cwinfo = {
+				"opponent": splitted[0].split()[2],
+				"score": {
+					"class": (int(cmp[0]) > int(cmp[1])) and "win" or (cmp[0] == cmp[1]) and "draw" or "lost",
+					"int": splitted[1].center(9).replace(' ', '0'),
+				},
+				"gametype": splitted[2],
+				"map": "wip",
+				"teams": splitted[3],
+				"cup": "wip",
+			}
+
+			array[topic.topic_id]["cwinfo"] = cwinfo
+
 		undecorated = array.values()
-		decorated = [(dict_["newest"].date, dict_) for dict_ in undecorated]
+		decorated = [(dict_["oldest"].date, dict_) for dict_ in undecorated]
 		decorated.sort()
 		decorated.reverse()
 		array = [dict_ for (key, dict_) in decorated]
 		clanwars = array
 		self.misc_render("clanwars.html", slug=category, clanwars=clanwars)
 
-application = webapp.WSGIApplication([	('/chat', ChatPage),
-										('/clanwars', WarsPage),
-										('/code', CodePage),
-										('/feed', FeedPage),
-										('/help', HelpPage),
-										('/help/markup', MarkupPage),
-										('/login', LoginHandler),
-										('/logout', LogoutHandler),
-										('/(.*)', ErrorPage),
-									], debug=True)
+application = webapp.WSGIApplication(
+[	('/chat', ChatPage),
+	('/clanwars', WarsPage),
+	('/code', CodePage),
+	('/feed', FeedPage),
+	('/help', HelpPage),
+	('/help/markup', MarkupPage),
+	('/login', LoginHandler),
+	('/logout', LogoutHandler),
+	('/(.*)', ErrorPage),
+], debug=True)
 
 def main():
 	run_wsgi_app(application)
