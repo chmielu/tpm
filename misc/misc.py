@@ -63,33 +63,38 @@ class WarsPage(TpmRequestHandler):
 		cat = db.Query(models.Category).filter("slug =", db.Category(category)).get()
 		if not cat:
 			error(self, 404);return
-		clanwars = db.Query(models.Post).filter("category =", cat).order("-date").fetch(limit=20)
+		clanwars = db.Query(models.Post).filter("category =", cat).order("date").fetch(limit=20)
 		array = {}
 		for topic in clanwars:
 			if not array.has_key(topic.topic_id):
+				splitted = topic.title.split(" - ")
+				cmp = splitted[1].split(':')
+				if len(cmp) != 2:
+					cmp = splitted[1].split('-')
+
+				# if still not 2 someone is an idiot?
+				if len(cmp) != 2:
+					cmp = "0:0"
+
+				cwinfo = {
+					"opponent": splitted[0].split()[2],
+					"score": {
+						"class": (int(cmp[0]) > int(cmp[1])) and "win" or (cmp[0] == cmp[1]) and "draw" or "lost",
+						"int": "%04d:%04d" % (int(cmp[0]), int(cmp[1])),
+					},
+					"gametype": splitted[2],
+					"map": "wip",
+					"teams": splitted[3],
+					"cup": "wip",
+				}
+
 				array[topic.topic_id] = {
 					"oldest": topic,
+					"cwinfo": cwinfo,
 					"replies": 0
 				}
 			else:
 				array[topic.topic_id]["replies"] += 1
-
-			splitted = topic.title.split(" - ")
-			cmp = splitted[1].split(':')
-
-			cwinfo = {
-				"opponent": splitted[0].split()[2],
-				"score": {
-					"class": (int(cmp[0]) > int(cmp[1])) and "win" or (cmp[0] == cmp[1]) and "draw" or "lost",
-					"int": splitted[1].center(9).replace(' ', '0'),
-				},
-				"gametype": splitted[2],
-				"map": "wip",
-				"teams": splitted[3],
-				"cup": "wip",
-			}
-
-			array[topic.topic_id]["cwinfo"] = cwinfo
 
 		undecorated = array.values()
 		decorated = [(dict_["oldest"].date, dict_) for dict_ in undecorated]
