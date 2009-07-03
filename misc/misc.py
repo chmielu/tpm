@@ -74,7 +74,7 @@ class WarsPage(TpmRequestHandler):
 
 				# if still not 2 someone is an idiot?
 				if len(cmp) != 2:
-					cmp = "0:0"
+					cmp = ["0","0"]
 
 				cwinfo = {
 					"opponent": splitted[0].split()[2],
