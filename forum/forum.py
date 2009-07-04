@@ -100,8 +100,8 @@ class TopicsPage(TpmRequestHandler):
 			slug = self.request.get("slug")
 		if not slug:
 			error(self, 400, "you must specify slug (it must be other then \"admin\")!");return
-		if models.Post.gql("WHERE topic_id = :1 LIMIT 1", slug).fetch(1):
-			error(self, 400, "this topic slug already exist!");return
+		if models.Post.gql("WHERE topic_id = :1 AND category = :2 LIMIT 1", slug, cat[0]).fetch(1):
+			error(self, 400, "this topic slug already exist in this category!");return
 
 		cat = cat[0]
 		cat.topics += 1

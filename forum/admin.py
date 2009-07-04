@@ -186,11 +186,12 @@ class EditTopicPage(TpmRequestHandler):
 		title = posts[0].title
 		content = posts[0].content
 		sticked = posts[0].sticky
+		closed = posts[0].closed
 		slug = {
 			"category": category,
 			"topic": topic
 		}
-		self.forum_render("edit_topics.html", title=title, content=content, slug=slug, sticked=sticked)
+		self.forum_render("edit_topics.html", title=title, content=content, slug=slug, sticked=sticked, closed=closed)
 
 	@administrator
 	def post(self, category, topic):
