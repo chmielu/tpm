@@ -9,6 +9,7 @@
 				<span class="input"><input type="text" name="slug" id="slug" value="{{ slug.topic }}" /></span>
 				<span class="input"><textarea name="content">{{ content }}</textarea></span>
 				<span class="input checkbox"><input type="checkbox" name="sticky" {% if sticked %} checked="checked"{% endif %} />Stick topic</span>
+				<span class="input checkbox"><input type="checkbox" name="closed" {% if closed %} checked="checked"{% endif %}/>Close topic</span>
 				<span class="input"><input type="submit" value="Update"/><span class="note">Note: You can use <a href="/help/markup">bbcode syntax</a> (html is <b>not</b> allowed)</span></span>
 			</form>
 		</div>

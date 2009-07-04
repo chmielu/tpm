@@ -216,6 +216,7 @@ class EditTopicPage(TpmRequestHandler):
 		posts[0].title = self.request.get("title")
 		posts[0].content = self.request.get("content")
 		posts[0].sticky = bool(self.request.get("sticky"))
+		posts[0].closed = bool(self.request.get("closed"))
 		posts[0].content_html = re.sub("<br />$", "", to_html(self.request.get("content")))
 
 		for post in posts:

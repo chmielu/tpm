@@ -25,3 +25,4 @@ class Post(db.Model):
 	category = db.ReferenceProperty(Category)
 	topic_id = db.CategoryProperty()
 	sticky = db.BooleanProperty(default=False)
+	closed = db.BooleanProperty(default=False)

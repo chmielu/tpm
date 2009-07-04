@@ -21,10 +21,18 @@
 			{% for topic in topics %}
 				{% if topic.sticked %}
 				<tr class="sticky" title="Sticked topic">
+					{% if topic.oldest.closed %}
+					<td><img src="/static/closed.png" alt="sticked icon" /></td>
+					{% else %}
 					<td><img src="/static/sticked.png" alt="sticked icon" /></td>
+					{% endif %}
 				{% else %}
 				<tr>
+					{% if topic.oldest.closed %}
+					<td><img src="/static/closed.png" alt="sticked icon" /></td>
+					{% else %}
 					<td>&nbsp;</td>
+					{% endif %}
 				{% endif %}
 					<td><a href="/forum/{{ slug }}/{{ topic.oldest.topic_id }}">{{ topic.oldest.title|escape }}</a></td>
 					<td class="replies">{{ topic.replies }}</td>
@@ -50,6 +58,7 @@
 				<span class="input"><textarea name="content"></textarea></span>
 			{% if admin %}
 				<span class="input checkbox"><input type="checkbox" name="sticky" />Stick topic</span>
+				<span class="input checkbox"><input type="checkbox" name="closed" />Close topic</span>
 			{% endif %}
 				<span class="input"><input type="submit" value="Create"/><span class="note">Note: You can use <a href="/help/markup">bbcode syntax</a> (html is <b>not</b> allowed)</span></span>
 			</form>

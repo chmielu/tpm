@@ -21,7 +21,7 @@
 		</div>
 		{% endfor %}
 
-		{% if user %}
+		{% if user and not closed %}
 		<div class="post">
 			<h2>Create reply:</h2>
 			<form action="/forum/{{ slug.category }}/{{ slug.topic }}" method="post">

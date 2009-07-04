@@ -113,6 +113,7 @@ class TopicsPage(TpmRequestHandler):
 			content_html = re.sub("<br />$", "", to_html(self.request.get("content"))),
 			title = self.request.get("title"),
 			sticky = bool(self.request.get("sticky")),
+			closed = bool(self.request.get("closed")),
 			category = cat,
 			topic_id = slugify(slug)
 		).put()
@@ -133,7 +134,7 @@ class PostsPage(TpmRequestHandler):
 			"topic": topic
 		}
 
-		self.forum_render("posts.html", topic=posts[0].title, category=cat[0].title, slug=slug, posts=posts)
+		self.forum_render("posts.html", topic=posts[0].title, category=cat[0].title, closed=posts[0].closed, slug=slug, posts=posts)
 
 	@login_required
 	def post(self, category, topic):
@@ -145,10 +146,15 @@ class PostsPage(TpmRequestHandler):
 		if not cat.count():
 			error(self, 400, "wrong category id!");return
 
+		oldest_post = models.Post().gql("WHERE topic_id = :1 ORDER BY date ASC LIMIT 1", topic)[0]
+
+		if oldest_post.closed:
+			error(self, 400, "this topic is closed!");return
+
 		if self.request.get("title"):
 			title = self.request.get("title")
 		else:
-			title = "Re: %s" % models.Post().gql("WHERE topic_id = :1 ORDER BY date ASC LIMIT 1", topic)[0].title
+			title = "Re: %s" % oldest_post.title
 
 		cat = cat[0]
 		cat.posts += 1
