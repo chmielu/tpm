@@ -7,9 +7,10 @@
 		<div class="post">
 			<h2>Topics list</h2>
 
-			{% if topics %}
+			{% if topics or topics_sticky %}
 			<table id="forum">
 				<tr>
+					<th></th>
 					<th class="left">Title</th>
 					<th>Replies</th>
 					<th>Last post</th>
@@ -17,8 +18,21 @@
 					<th colspan="2">Admin</th>
 				{% endif %}
 				</tr>
+			{% for topic in topics_sticky %}
+				<tr title="Sticked topic">
+					<td><img src="/static/sticked.png" alt="sticked icon" /></td>
+					<td class="sticky"><a href="/forum/{{ slug }}/{{ topic.oldest.topic_id }}">{{ topic.oldest.title|escape }}</a></td>
+					<td class="replies">{{ topic.replies }}</td>
+					<td class="last_post">posted {{ topic.newest.date|timesince }} ago<br/> by {{ topic.newest.user }}</td>
+				{% if admin %}
+					<td><a href="/forum/admin/edit/topic/{{ slug }}/{{ topic.oldest.topic_id }}">Edit</a></td>
+					<td><a href="/forum/admin/delete/topic/{{ slug }}/{{ topic.oldest.topic_id }}">Delete</a></td>
+				{% endif %}
+				</tr>
+			{% endfor %}
 			{% for topic in topics %}
 				<tr>
+					<td>&nbsp;</td>
 					<td><a href="/forum/{{ slug }}/{{ topic.oldest.topic_id }}">{{ topic.oldest.title|escape }}</a></td>
 					<td class="replies">{{ topic.replies }}</td>
 					<td class="last_post">posted {{ topic.newest.date|timesince }} ago<br/> by {{ topic.newest.user }}</td>
@@ -41,6 +55,9 @@
 				<span class="input"><input type="text" name="title" onkeyup="slugify('slug', this.value)" /></span>
 				<span class="input"><input type="text" name="slug" id="slug" /></span>
 				<span class="input"><textarea name="content"></textarea></span>
+			{% if admin %}
+				<span class="input"><input type="checkbox" name="sticky" />Stick topic</span>
+			{% endif %}
 				<span class="input"><input type="submit" value="Create"/><span class="note">Note: You can use <a href="/help/markup">bbcode syntax</a> (html is <b>not</b> allowed)</span></span>
 			</form>
 		</div>

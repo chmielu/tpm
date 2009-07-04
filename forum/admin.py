@@ -185,11 +185,12 @@ class EditTopicPage(TpmRequestHandler):
 
 		title = posts[0].title
 		content = posts[0].content
+		sticked = posts[0].sticky
 		slug = {
 			"category": category,
 			"topic": topic
 		}
-		self.forum_render("edit_topics.html", title=title, content=content, slug=slug)
+		self.forum_render("edit_topics.html", title=title, content=content, slug=slug, sticked=sticked)
 
 	@administrator
 	def post(self, category, topic):
@@ -214,6 +215,7 @@ class EditTopicPage(TpmRequestHandler):
 		posts = posts.fetch(1000)
 		posts[0].title = self.request.get("title")
 		posts[0].content = self.request.get("content")
+		posts[0].sticky = bool(self.request.get("sticky"))
 		posts[0].content_html = re.sub("<br />$", "", to_html(self.request.get("content")))
 
 		for post in posts:

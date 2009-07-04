@@ -65,7 +65,9 @@ class TopicsPage(TpmRequestHandler):
 		cat = models.Category().gql("WHERE slug = :1 LIMIT 1", db.Category(category))
 		if not cat.count():
 			error(self, 404);return
-		topics = models.Post().gql("WHERE category = :1 ORDER BY date ASC", cat[0])
+
+		# for `normal' topics
+		topics = models.Post().gql("WHERE category = :1 AND sticky = :2 ORDER BY date ASC", cat[0], False)
 
 		array = {}
 		for topic in topics:
@@ -79,13 +81,29 @@ class TopicsPage(TpmRequestHandler):
 		decorated = [(dict_["newest"].date, dict_) for dict_ in undecorated]
 		decorated.sort()
 		decorated.reverse()
-		array = [dict_ for (key, dict_) in decorated]
+		topics = [dict_ for (key, dict_) in decorated]
+
+		# for sticky topics
+		topics_sticky = models.Post().gql("WHERE category = :1 AND sticky = :2 ORDER BY date ASC", cat[0], True)
+
+		array = {}
+		for topic in topics_sticky:
+			if not array.has_key(topic.topic_id):
+				array[topic.topic_id] = {"oldest": topic, "newest": "", "replies": 0}
+			else:
+				array[topic.topic_id]["replies"] += 1
+			array[topic.topic_id]["newest"] = topic
+
+		undecorated = array.values()
+		decorated = [(dict_["newest"].date, dict_) for dict_ in undecorated]
+		decorated.sort()
+		decorated.reverse()
+		topics_sticky = [dict_ for (key, dict_) in decorated]
 
 		slug = category
 		category = models.Category().gql("WHERE slug = :1 LIMIT 1", db.Category(category))[0].title
-		topics = array
 
-		self.forum_render("topics.html", slug=slug, category=category, topics=topics)
+		self.forum_render("topics.html", slug=slug, category=category, topics_sticky=topics_sticky, topics=topics)
 
 	@login_required
 	def post(self, category):
@@ -102,6 +120,7 @@ class TopicsPage(TpmRequestHandler):
 			error(self, 400, "you must specify slug (it must be other then \"admin\")!");return
 		if models.Post.gql("WHERE topic_id = :1 LIMIT 1", slug).fetch(1):
 			error(self, 400, "this topic slug already exist!");return
+
 		cat = cat[0]
 		cat.topics += 1
 		cat.posts += 1
@@ -111,6 +130,7 @@ class TopicsPage(TpmRequestHandler):
 			content = self.request.get("content"),
 			content_html = re.sub("<br />$", "", to_html(self.request.get("content"))),
 			title = self.request.get("title"),
+			sticky = bool(self.request.get("sticky")),
 			category = cat,
 			topic_id = slugify(slug)
 		).put()

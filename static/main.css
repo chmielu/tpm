@@ -72,6 +72,7 @@ div.withborder { border-top: thin solid #ddd !important; }
 
 table#forum { font-size: 0.9em; padding: 10px; width: 100%; }
 table#forum th.left { text-align: left; width: 70%; }
+table#forum td.sticky { font-weight: bold; }
 table#forum td.last_post { font-size: 0.7em; width: 30%; text-align: center; }
 table#forum td.replies { font-weight: bold; text-align: center; }
 table#forum td span { font-size: 0.85em; color: #999; display: block; }

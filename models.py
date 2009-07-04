@@ -17,10 +17,11 @@ class Category(db.Model):
 	posts = db.IntegerProperty(default=0)
 
 class Post(db.Model):
-	user = db.UserProperty(auto_current_user_add = True)
+	user = db.UserProperty(auto_current_user_add=True)
 	title = db.StringProperty()
 	content = db.TextProperty()
 	content_html = db.TextProperty()
 	date = db.DateTimeProperty(auto_now_add=True)
 	category = db.ReferenceProperty(Category)
 	topic_id = db.CategoryProperty()
+	sticky = db.BooleanProperty()
