@@ -191,7 +191,9 @@ class EditTopicPage(TpmRequestHandler):
 			"category": category,
 			"topic": topic
 		}
-		self.forum_render("edit_topics.html", title=title, content=content, slug=slug, sticked=sticked, closed=closed)
+		categories = models.Category().all()
+		self.forum_render("edit_topics.html", title=title, content=content, slug=slug,
+			sticked=sticked, closed=closed, categories=categories)
 
 	@administrator
 	def post(self, category, topic):
@@ -211,7 +213,7 @@ class EditTopicPage(TpmRequestHandler):
 			error(self, 400, "you must specify slug!");return
 		if topic != slug:
 			if models.Post().gql("WHERE topic_id = :1 AND category = :2 LIMIT 1", db.Category(slug), cat[0]).count():
-				error(self, 400, "this category slug already exist!");return
+				error(self, 400, "this topic slug already exist!");return
 
 		posts = posts.fetch(1000)
 		posts[0].title = self.request.get("title")
@@ -220,9 +222,27 @@ class EditTopicPage(TpmRequestHandler):
 		posts[0].closed = bool(self.request.get("closed"))
 		posts[0].content_html = re.sub("<br />$", "", to_html(self.request.get("content")))
 
+		cat = cat[0]
+		if category != self.request.get("category"):
+			new_category = models.Category().gql("WHERE slug = :1 LIMIT 1", self.request.get("category"))[0]
+			if models.Post().gql("WHERE topic_id = :1 AND category = :2 LIMIT 1", db.Category(slug), new_category).count():
+				error(self, 400, "this topic slug already exist!");return
+
+			new_category.topics += 1
+			cat.topics -= 1
+		else:
+			new_category = cat
+
 		for post in posts:
 			post.topic_id = slug
+			post.category = new_category
 			post.put()
+
+			new_category.posts += 1
+			cat.posts -= 1
+
+		new_category.put()
+		cat.put()
 
 		self.redirect("/forum/%s" % category)
 

@@ -68,8 +68,8 @@ div.post a { color: #333; }
 div.post th { border-bottom: thin dashed #ddd; }
 div.post td, div.post th { font-size: 0.9em }
 div.post span.input { text-align: center; font-size: 0.8em; margin: 5px 0; padding: 0; width: 100%; display: block; }
-div.post span.input input, div.post span.input textarea { font-size: 1.2em; color: #666; background-color: #f6f6f6; border: thin solid #ddd; width: 98%; }
-div.post span.input input:hover, div.post span.input textarea:hover { background-color: #fcfcfc; }
+div.post span.input input, div.post span.input select, div.post span.input textarea { font-size: 1.2em; color: #666; background-color: #f6f6f6; border: thin solid #ddd; width: 98%; }
+div.post span.input input:hover, div.post span.input select:hover, div.post span.input textarea:hover { background-color: #fcfcfc; }
 div.post span.checkbox { text-align: left; color: #666; font-size: 0.9em; padding: 0 10px; }
 
 div.withborder { border-top: thin solid #ddd !important; }
