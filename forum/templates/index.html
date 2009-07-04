@@ -23,8 +23,8 @@
 					<td class="replies">{{ category.topics }}</td>
 					<td class="replies">{{ category.posts }}</td>
 				{% if admin %}
-					<td><a href="/forum/admin/edit/category/{{ category.slug }}">Edit</a></td>
-					<td><a href="/forum/admin/delete/category/{{ category.slug }}">Delete</a></td>
+					<td class="icon"><a href="/forum/admin/edit/category/{{ category.slug }}"><img src="/static/edit.png" alt="Edit icon" title="Edit" /></a></td>
+					<td class="icon"><a href="/forum/admin/delete/category/{{ category.slug }}"><img src="/static/delete.png" alt="Delete icon" title="Delete" /></a></td>
 				{% endif %}
 				</tr>
 				{% endfor %}

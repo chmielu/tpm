@@ -24,4 +24,4 @@ class Post(db.Model):
 	date = db.DateTimeProperty(auto_now_add=True)
 	category = db.ReferenceProperty(Category)
 	topic_id = db.CategoryProperty()
-	sticky = db.BooleanProperty()
+	sticky = db.BooleanProperty(default=False)

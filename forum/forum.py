@@ -66,44 +66,26 @@ class TopicsPage(TpmRequestHandler):
 		if not cat.count():
 			error(self, 404);return
 
-		# for `normal' topics
-		topics = models.Post().gql("WHERE category = :1 AND sticky = :2 ORDER BY date ASC", cat[0], False)
+		topics = models.Post().gql("WHERE category = :1 ORDER BY date ASC", cat[0])
 
 		array = {}
 		for topic in topics:
 			if not array.has_key(topic.topic_id):
-				array[topic.topic_id] = {"oldest": topic, "newest": "", "replies": 0}
+				array[topic.topic_id] = {"oldest": topic, "newest": "", "sticked": topic.sticky, "replies": 0}
 			else:
 				array[topic.topic_id]["replies"] += 1
 			array[topic.topic_id]["newest"] = topic
 
 		undecorated = array.values()
-		decorated = [(dict_["newest"].date, dict_) for dict_ in undecorated]
+		decorated = [(dict_["sticked"], dict_["newest"].date, dict_) for dict_ in undecorated]
 		decorated.sort()
 		decorated.reverse()
-		topics = [dict_ for (key, dict_) in decorated]
-
-		# for sticky topics
-		topics_sticky = models.Post().gql("WHERE category = :1 AND sticky = :2 ORDER BY date ASC", cat[0], True)
-
-		array = {}
-		for topic in topics_sticky:
-			if not array.has_key(topic.topic_id):
-				array[topic.topic_id] = {"oldest": topic, "newest": "", "replies": 0}
-			else:
-				array[topic.topic_id]["replies"] += 1
-			array[topic.topic_id]["newest"] = topic
-
-		undecorated = array.values()
-		decorated = [(dict_["newest"].date, dict_) for dict_ in undecorated]
-		decorated.sort()
-		decorated.reverse()
-		topics_sticky = [dict_ for (key, dict_) in decorated]
+		topics = [dict_ for (_, key, dict_) in decorated]
 
 		slug = category
 		category = models.Category().gql("WHERE slug = :1 LIMIT 1", db.Category(category))[0].title
 
-		self.forum_render("topics.html", slug=slug, category=category, topics_sticky=topics_sticky, topics=topics)
+		self.forum_render("topics.html", slug=slug, category=category, topics=topics)
 
 	@login_required
 	def post(self, category):
@@ -158,7 +140,6 @@ class PostsPage(TpmRequestHandler):
 		if not self.request.get("content"):
 			error(self, 400, "you must enter a topic title and the content!");return
 
-		#cat = models.Category().get_by_key_name(category)
 		cat = models.Category().gql("WHERE slug = :1 LIMIT 1", db.Category(category))
 
 		if not cat.count():
@@ -178,7 +159,7 @@ class PostsPage(TpmRequestHandler):
 			content_html = re.sub("<br />$", "", to_html(self.request.get("content"))),
 			title = title,
 			category = cat,
-			topic_id = topic
+			topic_id = topic,
 		).put()
 
 		self.redirect("/forum/%s/%s" % (category, topic))

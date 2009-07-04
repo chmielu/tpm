@@ -11,8 +11,8 @@
 			<p class="grey">
 			{% if admin %}
 				{% if not forloop.first %}
-				<span style="float:right"><a href="/forum/admin/delete/post/{{ post.key }}">Delete</a></span>
-				<span style="float:right"><a href="/forum/admin/edit/post/{{ post.key }}">Edit</a>&nbsp;•&nbsp;</span>
+				<span><a href="/forum/admin/delete/post/{{ post.key }}"><img src="/static/delete.png" alt="Delete icon" title="Delete" /></a></span>
+				<span><a href="/forum/admin/edit/post/{{ post.key }}"><img src="/static/edit.png" alt="Edit icon" title="Edit" /></a></span>
 				{% endif %}
 			{% endif %}
 				posted by <a href="mailto:{{ post.user.email }}">{{ post.user.nickname|escape }}</a> on {{ post.date|date:"r" }}
