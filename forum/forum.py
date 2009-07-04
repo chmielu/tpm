@@ -35,8 +35,7 @@ from utils import *
 
 class MainPage(TpmRequestHandler):
 	def get(self):
-		categories = models.Category().gql("ORDER BY title").fetch(1000)
-
+		categories = models.Category().gql("ORDER BY title")
 		self.forum_render("index.html", categories=categories)
 
 	@administrator
@@ -50,7 +49,7 @@ class MainPage(TpmRequestHandler):
 			slug = self.request.get("slug")
 		if not slug:
 			error(self, 400, "you must specify slug!");return
-		if models.Category().gql("WHERE slug = :1 LIMIT 1", slug).fetch(1):
+		if models.Category().gql("WHERE slug = :1 LIMIT 1", slug).count():
 			error(self, 400, "this category slug already exist!");return
 		cat = models.Category(
 			title = db.Category(self.request.get("title")),
@@ -100,7 +99,7 @@ class TopicsPage(TpmRequestHandler):
 			slug = self.request.get("slug")
 		if not slug:
 			error(self, 400, "you must specify slug (it must be other then \"admin\")!");return
-		if models.Post.gql("WHERE topic_id = :1 AND category = :2 LIMIT 1", slug, cat[0]).fetch(1):
+		if models.Post.gql("WHERE topic_id = :1 AND category = :2 LIMIT 1", slug, cat[0]).count():
 			error(self, 400, "this topic slug already exist in this category!");return
 
 		cat = cat[0]
