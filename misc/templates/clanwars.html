@@ -9,7 +9,7 @@
 {% endblock %}
 {% block content %}
 		<div class="post_header">
-			This is preview. All data are fake.
+			Last 20. <a href="/forum/clanwars/challenge_us">Challenge us!</a>
 		</div>
 		<div class="post">
 			<h2>Clanwars</h2>
@@ -31,10 +31,10 @@
 					<td class="{{ clanwar.cwinfo.score.class }}">{{ clanwar.cwinfo.score.int }}</td>
 					<td>{{ clanwar.cwinfo.opponent }}</td>
 					<td>{{ clanwar.oldest.date|date:"d-m-y" }}</td>
-					<td>{% if clanwar.cwinfo.gametype %}{{ clanwar.cwinfo.gametype }}{% else %}CTF{% endif %}</td>
+					<td>{% if clanwar.cwinfo.gametype %}{{ clanwar.cwinfo.gametype }}{% else %}N/A{% endif %}</td>
 					<td>{% if clanwar.cwinfo.map %}{{ clanwar.cwinfo.map }}{% else %}N/A{% endif %}</td>
 					<td>{% if clanwar.cwinfo.teams %}{{ clanwar.cwinfo.teams }}{% else %}N/A{% endif %}</td>
-					<td>{% if clanwar.cwinfo.cup %}{{ clanwar.cwinfo.cup }}{% else %}fun{% endif %}</td>
+					<td>{% if clanwar.cwinfo.cup %}{{ clanwar.cwinfo.cup }}{% else %}N/A{% endif %}</td>
 					<td><a href="/forum/{{ slug }}/{{ clanwar.oldest.topic_id }}">discussion</a> ({% if clanwar.replies %}{{ clanwar.replies }}{% else %}-{% endif %})</td>
 				</tr>
 {% endfor %}
