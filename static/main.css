@@ -70,12 +70,13 @@ div.post td, div.post th { font-size: 0.9em }
 div.post span.input { text-align: center; font-size: 0.8em; margin: 5px 0; padding: 0; width: 100%; display: block; }
 div.post span.input input, div.post span.input textarea { font-size: 1.2em; color: #666; background-color: #f6f6f6; border: thin solid #ddd; width: 98%; }
 div.post span.input input:hover, div.post span.input textarea:hover { background-color: #fcfcfc; }
+div.post span.checkbox { text-align: left; color: #666; font-size: 0.9em; padding: 0 10px; }
 
 div.withborder { border-top: thin solid #ddd !important; }
 
-table#forum { font-size: 0.9em; padding: 10px; width: 100%; }
+table#forum { font-size: 0.9em; padding: 10px; width: 100%; border-spacing: 0; }
 table#forum th.left { text-align: left; width: 70%; }
-table#forum td.sticky { font-weight: bold; }
+table#forum tr.sticky { background-color: #FFE9B7; }
 table#forum td.last_post { font-size: 0.7em; width: 30%; text-align: center; }
 table#forum td.replies { font-weight: bold; text-align: center; }
 table#forum td.icon { width: 16px; }
