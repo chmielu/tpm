@@ -70,10 +70,18 @@ class TopicsPage(TpmRequestHandler):
 		array = {}
 		for topic in topics:
 			if not array.has_key(topic.topic_id):
-				array[topic.topic_id] = {"oldest": topic, "newest": "", "sticked": topic.sticky, "replies": 0}
+				array[topic.topic_id] = {
+					"oldest": topic,
+					"newest": "",
+					"sticked": topic.sticky,
+					"replies": 0
+				}
 			else:
 				array[topic.topic_id]["replies"] += 1
-			array[topic.topic_id]["newest"] = topic
+			array[topic.topic_id].update({
+				"newest": topic,
+				"profile": db.Query(models.Profile).filter("user =", topic.user).get(),
+			})
 
 		undecorated = array.values()
 		decorated = [(dict_["sticked"], dict_["newest"].date, dict_) for dict_ in undecorated]
@@ -128,12 +136,21 @@ class PostsPage(TpmRequestHandler):
 		if not posts.count():
 			error(self, 404, uri="/forum/%s" % category);return
 
+		array = []
+		for post in posts:
+			array.append({
+				"post": post,
+				"profile": db.Query(models.Profile).filter("user =", post.user).get(),
+			})
+		del posts
+
 		slug = {
 			"category": category,
 			"topic": topic
 		}
 
-		self.forum_render("posts.html", topic=posts[0].title, category=cat[0].title, closed=posts[0].closed, slug=slug, posts=posts)
+		self.forum_render("posts.html", topic=array[0]["post"].title, category=cat[0].title,
+			closed=array[0]["post"].closed, slug=slug, posts=array)
 
 	@login_required
 	def post(self, category, topic):

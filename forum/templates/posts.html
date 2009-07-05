@@ -6,16 +6,16 @@
 		</div>
 		{% for post in posts %}
 		<div class="post">
-			<h2>{{ post.title|escape }}</h2>
-			<p>{{ post.content_html }}</p>
+			<h2>{{ post.post.title|escape }}</h2>
+			<p>{{ post.post.content_html }}</p>
 			<p class="grey">
 			{% if admin %}
 				{% if not forloop.first %}
-				<span><a href="/forum/admin/delete/post/{{ post.key }}"><img src="/static/delete.png" alt="Delete icon" title="Delete" /></a></span>
-				<span><a href="/forum/admin/edit/post/{{ post.key }}"><img src="/static/edit.png" alt="Edit icon" title="Edit" /></a></span>
+				<span><a href="/forum/admin/delete/post/{{ post.post.key }}"><img src="/static/delete.png" alt="Delete icon" title="Delete" /></a></span>
+				<span><a href="/forum/admin/edit/post/{{ post.post.key }}"><img src="/static/edit.png" alt="Edit icon" title="Edit" /></a></span>
 				{% endif %}
 			{% endif %}
-				posted by <a href="mailto:{{ post.user.email }}">{{ post.user.nickname|escape }}</a> on {{ post.date|date:"r" }}
+				posted by <a href="mailto:{{ post.post.user.email }}">{{ post.profile.screenname|default:post.post.user.nickname|escape }}</a> on {{ post.post.date|date:"r" }}
 			</p>
 
 		</div>

@@ -14,20 +14,20 @@ class UserPage(TpmRequestHandler):
 class AvatarPage(TpmRequestHandler):
 	def get(self):
 		self.misc_render("user_avatar.html")
-	
+
 	def post(self):
 		self.redirect("/user/avatar")
 
 class ProfilePage(TpmRequestHandler):
 	def get(self):
 		self.misc_render("user_profile.html")
-	
+
 	def post(self):
 		profile = db.Query(models.Profile).filter("user =", users.get_current_user()).get()
 		if not profile:
 			profile = models.Profile(
-			user=users.get_current_user(),
-			screenname=self.request.get("screenname"),
+				user=users.get_current_user(),
+				screenname=self.request.get("screenname"),
 			)
 		else:
 			profile.screenname=self.request.get("screenname")

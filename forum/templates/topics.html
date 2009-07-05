@@ -36,7 +36,7 @@
 				{% endif %}
 					<td><a href="/forum/{{ slug }}/{{ topic.oldest.topic_id }}">{{ topic.oldest.title|escape }}</a></td>
 					<td class="replies">{{ topic.replies }}</td>
-					<td class="last_post">posted {{ topic.newest.date|timesince }} ago<br/> by {{ topic.newest.user }}</td>
+					<td class="last_post">posted {{ topic.newest.date|timesince }} ago<br/> by {{ topic.profile.screenname|default:topic.newest.user }}</td>
 				{% if admin %}
 					<td class="icon"><a href="/forum/admin/edit/topic/{{ slug }}/{{ topic.oldest.topic_id }}"><img src="/static/edit.png" alt="Edit icon" title="Edit" /></a></td>
 					<td class="icon"><a href="/forum/admin/delete/topic/{{ slug }}/{{ topic.oldest.topic_id }}"><img src="/static/delete.png" alt="Delete icon" title="Delete" /></a></td>
