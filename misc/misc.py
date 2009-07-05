@@ -107,8 +107,8 @@ class LogoutHandler(TpmRequestHandler):
         else:
             self.redirect('/')
 
-application = webapp.WSGIApplication(
-[	('/chat', ChatPage),
+application = webapp.WSGIApplication([
+	('/chat', ChatPage),
 	('/clanwars', ClanwarsPage),
 	('/code', CodePage),
 	('/feed', FeedPage),

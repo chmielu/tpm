@@ -24,13 +24,18 @@ class ProfilePage(TpmRequestHandler):
 
 	def post(self):
 		profile = db.Query(models.Profile).filter("user =", users.get_current_user()).get()
+
+		if self.request.get("screenname") != profile.screenname:
+			if db.Query(models.Profile).filter("screenname =", self.request.get("screenname")).count():
+				error(self, 400, "this screen name already exist!");return
+
 		if not profile:
 			profile = models.Profile(
-				user=users.get_current_user(),
-				screenname=self.request.get("screenname"),
+				user = users.get_current_user(),
+				screenname = self.request.get("screenname"),
 			)
 		else:
-			profile.screenname=self.request.get("screenname")
+			profile.screenname = self.request.get("screenname")
 		profile.put()
 		self.redirect("/user/profile")
 
@@ -41,8 +46,8 @@ class SignaturePage(TpmRequestHandler):
 	def post(self):
 		self.redirect("/user/signature")
 
-application = webapp.WSGIApplication(
-[	('/user', UserPage),
+application = webapp.WSGIApplication([
+	('/user', UserPage),
 	('/user/avatar', AvatarPage),
 	('/user/profile', ProfilePage),
 	('/user/signature', SignaturePage),

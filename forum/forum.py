@@ -186,14 +186,11 @@ class PostsPage(TpmRequestHandler):
 
 		self.redirect("/forum/%s/%s" % (category, topic))
 
-application = webapp.WSGIApplication(
-	[
-		('/forum/(.+)/(.+)', PostsPage),
-		('/forum/(.+)', TopicsPage),
-		('/forum', MainPage),
-	],
-
-	debug=True)
+application = webapp.WSGIApplication([
+	('/forum/(.+)/(.+)', PostsPage),
+	('/forum/(.+)', TopicsPage),
+	('/forum', MainPage),
+], debug=True)
 
 if __name__ == "__main__":
 	run_wsgi_app(application)
