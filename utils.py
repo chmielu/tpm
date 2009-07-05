@@ -2,10 +2,11 @@ from google.appengine.ext import db
 from google.appengine.ext import webapp
 from google.appengine.ext.webapp import template
 from google.appengine.api import users
-import os, sys, re, functools, datetime
+import os, sys, re, functools, datetime, models
 sys.path.append("../lib")
 import postmarkup
 
+# TODO put it into database
 ADMINS = [ "banana@thepuma.eu", "robert@chmielowiec.net" ]
 MEMBERS = "thepuma.eu"
 
@@ -15,6 +16,9 @@ class TpmRequestHandler(webapp.RequestHandler):
 
 	def render(self, tmpl, tmplprefix="blog/", *args, **kw):
 		template_values = dict(**kw)
+		profile = db.Query(models.Profile).filter("user =", users.get_current_user()).get()
+		if profile:
+			template_values.update({'profile': profile})
 		template_values.update({'user': users.get_current_user()})
 		template_values.update({'users': users})
 		template_values.update({'admin': str(users.get_current_user()) in ADMINS})

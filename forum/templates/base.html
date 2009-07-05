@@ -28,7 +28,7 @@
 
 		<div id="submenu">
 			{% if user %}
-			You are logged in as {{ user.nickname }}. <a href="/logout">Logout</a>.
+			You are logged in as {% if profile.screenname %}{{ profile.screenname }} ({{ user.nickname }}){% else %}{{ user.nickname }}{% endif %}. <a href="/user">UserCP</a>, <a href="/logout">Logout</a>.
 			{% else %}
 			You are not logged in. Please <a href="/login">login</a> with your Google Account.
 			{% endif %}

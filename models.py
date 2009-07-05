@@ -26,3 +26,9 @@ class Post(db.Model):
 	topic_id = db.CategoryProperty()
 	sticky = db.BooleanProperty(default=False)
 	closed = db.BooleanProperty(default=False)
+
+class Profile(db.Model):
+	user = db.UserProperty(required=True)
+	screenname = db.StringProperty()
+	avatar = db.BlobProperty()
+	signature = db.TextProperty()

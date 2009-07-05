@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block title %}Change profile &laquo; User CP{% endblock %}
+{% block content %}
+		<div class="post_header">
+			<a href="/user">User CP Home</a> &raquo; <a href="/user/profile">Profile</a>
+		</div>
+		<div class="post">
+			<h2>Nickname:</h2>
+			<form action="/user/profile" method="post">
+				<span class="input"><input type="text" name="screenname" value="{{ profile.screenname }}" /></span>
+				<span class="input"><input type="submit" value="Update"/></span>
+			</form>
+		</div>
+{% endblock %}
