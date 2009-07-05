@@ -35,8 +35,8 @@ from utils import *
 
 class MainPage(TpmRequestHandler):
 	def get(self):
-		categories = models.Category().gql("ORDER BY title")
-		self.forum_render("index.html", categories=categories)
+		categories = db.Query(models.Category()).fetch(1000)
+		self.forum_render("index.html", categories=sorted(categories))
 
 	@administrator
 	@login_required
