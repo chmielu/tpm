@@ -7,7 +7,7 @@
 		{% for post in posts %}
 		<div class="post">
 			<h2>{{ post.post.title|escape }}</h2>
-			<p>{{ post.post.content_html }}</p>
+			<p>{{ post.post.content_html }}{% if profile.signature_html %}<span class="sig"><hr/>{{ post.profile.signature_html }}</span>{% endif %}</p>
 			<p class="grey">
 			{% if admin %}
 				{% if not forloop.first %}

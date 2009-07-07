@@ -25,17 +25,17 @@ class ProfilePage(TpmRequestHandler):
 	def post(self):
 		profile = db.Query(models.Profile).filter("user =", users.get_current_user()).get()
 
-		if self.request.get("screenname") != profile.screenname:
-			if db.Query(models.Profile).filter("screenname =", self.request.get("screenname")).count():
-				error(self, 400, "this screen name already exist!");return
-
-		if not profile:
+		if profile:
+			if self.request.get("screenname") != profile.screenname:
+				if db.Query(models.Profile).filter("screenname =", self.request.get("screenname")).count():
+					error(self, 400, "this screen name already exist!");return
+			profile.screenname = self.request.get("screenname")
+		else:
 			profile = models.Profile(
 				user = users.get_current_user(),
 				screenname = self.request.get("screenname"),
 			)
-		else:
-			profile.screenname = self.request.get("screenname")
+
 		profile.put()
 		self.redirect("/user/profile")
 
