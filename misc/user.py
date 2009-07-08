@@ -27,10 +27,12 @@ class ProfilePage(TpmRequestHandler):
 
 		if profile:
 			if self.request.get("screenname") != profile.screenname:
-				if db.Query(models.Profile).filter("screenname =", self.request.get("screenname")).count():
-					error(self, 400, "this screen name already exist!");return
+				if db.Query(models.Profile).filter("screenname =", self.request.get("screenname")).get():
+					self.misc_render("user_profile.html", message="This screen name is taken."); return
 			profile.screenname = self.request.get("screenname")
 		else:
+			if db.Query(models.Profile).filter("screenname =", self.request.get("screenname")).get():
+				self.misc_render("user_profile.html", message="This screen name is taken."); return
 			profile = models.Profile(
 				user = users.get_current_user(),
 				screenname = self.request.get("screenname"),
