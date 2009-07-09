@@ -24,20 +24,24 @@ class ProfilePage(TpmRequestHandler):
 
 	def post(self):
 		profile = db.Query(models.Profile).filter("user =", users.get_current_user()).get()
+		screenname = self.request.get("screenname")
 
 		if profile:
-			if self.request.get("screenname") != profile.screenname:
-				if db.Query(models.Profile).filter("screenname =", self.request.get("screenname")).get():
+			if screenname != profile.screenname:
+				if db.Query(models.Profile).filter("screenname =", screenname).get():
 					self.misc_render("user_profile.html", message="This screen name is taken."); return
-			profile.screenname = self.request.get("screenname")
+			profile.screenname = screenname
 		else:
-			if db.Query(models.Profile).filter("screenname =", self.request.get("screenname")).get():
+			if db.Query(models.Profile).filter("screenname =", screenname).get():
 				self.misc_render("user_profile.html", message="This screen name is taken."); return
-			profile = models.Profile(
-				user = users.get_current_user(),
-				screenname = self.request.get("screenname"),
-			)
-
+			try:
+				profile = models.Profile(
+					user = users.get_current_user(),
+					screenname = screenname,
+				)
+			except Exception, message:
+				self.misc_render("user_profile.html", message="An error has occured: %s" % message); return
+		
 		profile.put()
 		self.redirect("/user/profile")
 

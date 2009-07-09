@@ -29,6 +29,7 @@ class Post(db.Model):
 
 class Profile(db.Model):
 	user = db.UserProperty(required=True)
-	screenname = db.StringProperty()
+	screenname = db.StringProperty(required=True)
 	avatar = db.BlobProperty()
 	signature = db.TextProperty()
+	signature_html = db.TextProperty()

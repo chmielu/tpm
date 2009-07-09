@@ -16,10 +16,14 @@ class TpmRequestHandler(webapp.RequestHandler):
 
 	def render(self, tmpl, tmplprefix="blog/", *args, **kw):
 		template_values = dict(**kw)
-		profile = db.Query(models.Profile).filter("user =", users.get_current_user()).get()
-		if profile:
-			template_values.update({'profile': profile})
-		template_values.update({'user': users.get_current_user()})
+		user = users.get_current_user()
+		if user:
+			profile = db.Query(models.Profile).filter("user =", user).get()
+			if profile:
+				template_values.update({'profile': profile})
+			elif not "message" in template_values:
+				 template_values.update({'message': "We strongly recommend you to update your profile <a href=\"/user/profile\">here</a>."})
+		template_values.update({'user': user})
 		template_values.update({'users': users})
 		template_values.update({'admin': str(users.get_current_user()) in ADMINS})
 		path = os.path.join(os.path.dirname(__file__), '%stemplates/%s' % (tmplprefix, tmpl))
