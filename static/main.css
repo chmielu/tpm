@@ -76,6 +76,9 @@ div.post span.checkbox { text-align: left; color: #666; font-size: 0.9em; paddin
 
 div.withborder { border-top: thin solid #ddd !important; }
 
+div#message { background-color: #e3d185; color: #b5463f; font-size: 0.8em; padding: 10px; margin: -20px 0 -10px 0; }
+div#message a { color: #b5463f; font-weight: bold; }
+
 table#forum { font-size: 0.9em; padding: 10px; width: 100%; border-spacing: 0; }
 table#forum th.left { text-align: left; width: 70%; }
 table#forum tr.sticky { background-color: #FFE9B7; }
