@@ -37,7 +37,7 @@ from utils import *
 class DeleteCategoryPage(TpmRequestHandler):
 	@administrator
 	def get(self, category):
-		cat = models.Category().gql("WHERE slug = :1 LIMIT 1", db.Category(category))
+		cat = models.Category.gql("WHERE slug = :1 LIMIT 1", db.Category(category))
 		if not cat.count():
 			error(self, 404);return
 
@@ -51,11 +51,11 @@ class DeleteCategoryPage(TpmRequestHandler):
 			self.redirect("/forum")
 			return
 		elif self.request.get("delete_confirmation") == "yes":
-			cat = models.Category().gql("WHERE slug = :1 LIMIT 1", db.Category(category))
+			cat = models.Category.gql("WHERE slug = :1 LIMIT 1", db.Category(category))
 			if not cat.count():
 				error(self, 400, "wrong category id!");return
 
-			posts = models.Post().gql("WHERE category = :1", cat[0])
+			posts = models.Post.gql("WHERE category = :1", cat[0])
 
 			for post in posts:
 				post.delete()
@@ -66,10 +66,10 @@ class DeleteCategoryPage(TpmRequestHandler):
 class DeleteTopicPage(TpmRequestHandler):
 	@administrator
 	def get(self, category, topic):
-		cat = models.Category().gql("WHERE slug = :1 LIMIT 1", db.Category(category))
+		cat = models.Category.gql("WHERE slug = :1 LIMIT 1", db.Category(category))
 		if not cat.count():
 			error(self, 404);return
-		posts = models.Post().gql("WHERE topic_id = :1 AND category = :2 ORDER BY date ASC", db.Category(topic), cat[0])
+		posts = models.Post.gql("WHERE topic_id = :1 AND category = :2 ORDER BY date ASC", db.Category(topic), cat[0])
 		if not posts.count():
 			error(self, 404, uri="/forum/%s" % category);return
 
@@ -85,11 +85,11 @@ class DeleteTopicPage(TpmRequestHandler):
 		if self.request.get("delete_confirmation") == "no":
 			self.redirect("/forum/%s" % category);return
 		elif self.request.get("delete_confirmation") == "yes":
-			cat = models.Category().gql("WHERE slug = :1 LIMIT 1", db.Category(category))
+			cat = models.Category.gql("WHERE slug = :1 LIMIT 1", db.Category(category))
 			if not cat.count():
 				error(self, 400, "wrong category id!");return
 
-			posts = models.Post().gql("WHERE topic_id = :1 AND category = :2 ORDER BY date ASC", db.Category(topic), cat[0])
+			posts = models.Post.gql("WHERE topic_id = :1 AND category = :2 ORDER BY date ASC", db.Category(topic), cat[0])
 
 			cat = cat[0]
 			cat.topics -= 1
@@ -139,7 +139,7 @@ class DeletePostPage(TpmRequestHandler):
 class EditCategoryPage(TpmRequestHandler):
 	@administrator
 	def get(self, category):
-		cat = models.Category().gql("WHERE slug = :1 LIMIT 1", db.Category(category))
+		cat = models.Category.gql("WHERE slug = :1 LIMIT 1", db.Category(category))
 		if not cat.count():
 			error(self, 404);return
 
@@ -150,7 +150,7 @@ class EditCategoryPage(TpmRequestHandler):
 
 	@administrator
 	def post(self, category):
-		cat = models.Category().gql("WHERE slug = :1 LIMIT 1", db.Category(category))
+		cat = models.Category.gql("WHERE slug = :1 LIMIT 1", db.Category(category))
 		if not cat.count():
 			error(self, 404);return
 		if not self.request.get("title"):
@@ -162,7 +162,7 @@ class EditCategoryPage(TpmRequestHandler):
 		if not slug:
 			error(self, 400, "you must specify slug!");return
 		if category != slug:
-			if models.Category().gql("WHERE slug = :1 LIMIT 1", db.Category(slug)).count():
+			if models.Category.gql("WHERE slug = :1 LIMIT 1", db.Category(slug)).count():
 				error(self, 400, "this category slug already exist!");return
 
 		cat = cat[0]
@@ -176,10 +176,10 @@ class EditCategoryPage(TpmRequestHandler):
 class EditTopicPage(TpmRequestHandler):
 	@administrator
 	def get(self, category, topic):
-		cat = models.Category().gql("WHERE slug = :1 LIMIT 1", db.Category(category))
+		cat = models.Category.gql("WHERE slug = :1 LIMIT 1", db.Category(category))
 		if not cat.count():
 			error(self, 404);return
-		posts = models.Post().gql("WHERE topic_id = :1 AND category = :2 ORDER BY date ASC", db.Category(topic), cat[0])
+		posts = models.Post.gql("WHERE topic_id = :1 AND category = :2 ORDER BY date ASC", db.Category(topic), cat[0])
 		if not posts.count():
 			error(self, 404, uri="/forum/%s" % category);return
 
@@ -191,16 +191,16 @@ class EditTopicPage(TpmRequestHandler):
 			"category": category,
 			"topic": topic
 		}
-		categories = models.Category().all()
+		categories = models.Category.all()
 		self.forum_render("edit_topics.html", title=title, content=content, slug=slug,
 			sticked=sticked, closed=closed, categories=categories)
 
 	@administrator
 	def post(self, category, topic):
-		cat = models.Category().gql("WHERE slug = :1 LIMIT 1", db.Category(category))
+		cat = models.Category.gql("WHERE slug = :1 LIMIT 1", db.Category(category))
 		if not cat.count(): error(self, 400, "wrong category id!");return
 
-		posts = models.Post().gql("WHERE topic_id = :1 AND category = :2 ORDER BY date ASC", db.Category(topic), cat[0])
+		posts = models.Post.gql("WHERE topic_id = :1 AND category = :2 ORDER BY date ASC", db.Category(topic), cat[0])
 		if not posts.count(): error(self, 400, "wrong topic id!");return
 
 		if not self.request.get("content") or not self.request.get("title"):
@@ -212,7 +212,7 @@ class EditTopicPage(TpmRequestHandler):
 		if not slug:
 			error(self, 400, "you must specify slug!");return
 		if topic != slug:
-			if models.Post().gql("WHERE topic_id = :1 AND category = :2 LIMIT 1", db.Category(slug), cat[0]).count():
+			if models.Post.gql("WHERE topic_id = :1 AND category = :2 LIMIT 1", db.Category(slug), cat[0]).count():
 				error(self, 400, "this topic slug already exist!");return
 
 		posts = posts.fetch(1000)
@@ -224,8 +224,8 @@ class EditTopicPage(TpmRequestHandler):
 
 		cat = cat[0]
 		if category != self.request.get("category"):
-			new_category = models.Category().gql("WHERE slug = :1 LIMIT 1", self.request.get("category"))[0]
-			if models.Post().gql("WHERE topic_id = :1 AND category = :2 LIMIT 1", db.Category(slug), new_category).count():
+			new_category = models.Category.gql("WHERE slug = :1 LIMIT 1", self.request.get("category"))[0]
+			if models.Post.gql("WHERE topic_id = :1 AND category = :2 LIMIT 1", db.Category(slug), new_category).count():
 				error(self, 400, "this topic slug already exist!");return
 
 			new_category.topics += 1

@@ -27,6 +27,11 @@
 			</ul>
 		</div>
 {% block submenu %}{% endblock %}
+{% if message %}
+		<div id="message">
+			{{ message }}
+		</div>
+{% endif %}
 {% block content %}{% endblock %}
 		<div id="footer">
 			<p>copyright 2009 © <a href="http://ksocha.com">Krzysztof Socha</a> and <a href="http://robert.chmielowiec.net">Robert Chmielowiec</a><br />for <strong><a href="http://thepuma.eu">The Puppets Masters</a></strong> - <a href="/code">code</a> - <a href="http://code.google.com/appengine">gae</a> powered</p>

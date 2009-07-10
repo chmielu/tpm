@@ -17,7 +17,7 @@ class ClanwarsPage(TpmRequestHandler):
 		category = "clanwars"
 		cat = db.Query(models.Category).filter("slug =", db.Category(category)).get()
 		if not cat:
-			error(self, 500, "Administrator have to set up  category with 'clanwars' slug.");return
+			error(self, 500, "Administrator have to set up category with 'clanwars' slug.");return
 		clanwars = db.Query(models.Post).filter("category =", cat).order("date").fetch(limit=20)
 		array = {}
 		for topic in clanwars:

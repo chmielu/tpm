@@ -10,16 +10,16 @@ class Entry(db.Model):
 	published = db.DateTimeProperty(auto_now_add=True)
 
 class Category(db.Model):
-	title = db.CategoryProperty()
+	title = db.CategoryProperty(required=True)
 	desc = db.StringProperty()
-	slug = db.CategoryProperty()
+	slug = db.CategoryProperty(required=True)
 	topics = db.IntegerProperty(default=0)
 	posts = db.IntegerProperty(default=0)
 
 class Post(db.Model):
 	user = db.UserProperty(auto_current_user_add=True)
-	title = db.StringProperty()
-	content = db.TextProperty()
+	title = db.StringProperty(required=True)
+	content = db.TextProperty(required=True)
 	content_html = db.TextProperty()
 	date = db.DateTimeProperty(auto_now_add=True)
 	category = db.ReferenceProperty(Category)

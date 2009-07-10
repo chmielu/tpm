@@ -19,17 +19,21 @@ class NewEntryPage(TpmRequestHandler):
 
 	@administrator
 	def post(self):
-		slug = slugify(self.request.get("title"))
 		if self.request.get("slug"):
 			slug = self.request.get("slug")
-		entry = models.Entry(
-			key_name=slug,
-			author=users.get_current_user(),
-			title=self.request.get("title"),
-			slug=slug,
-			body=self.request.get("body"),
-			body_html=re.sub("<br />$", "", to_html(self.request.get("body")))
-		)
+		else:
+			slug = slugify(self.request.get("title"))
+		try:
+			entry = models.Entry(
+				key_name=slug,
+				author=users.get_current_user(),
+				title=self.request.get("title"),
+				slug=slug,
+				body=self.request.get("body"),
+				body_html=re.sub("<br />$", "", to_html(self.request.get("body")))
+			)
+		except Exception, message:
+			self.render("admin_new.html", message="An error has occured: %s" % message); return
 		entry.put()
 		self.redirect("/entry/" + entry.slug)
 
@@ -47,14 +51,17 @@ class EditEntryPage(TpmRequestHandler):
 		if not entry:
 			error(self, 400, "Don't use this form to add new entries. Thank you."); return
 		else:
-			if self.request.get("slug") and not self.request.get("slug") == slug:
-				slug = self.request.get("slug")
-			entry.key_name=slug
-			entry.title=self.request.get("title")
-			entry.slug=slug
-			entry.body = self.request.get("body")
-			entry.body_html = re.sub("<br />$", "", to_html(self.request.get("body")))
-			entry.updated = datetime.datetime.now()
+			try:
+				if self.request.get("slug") and not self.request.get("slug") == slug:
+					slug = self.request.get("slug")
+				entry.key_name=slug
+				entry.title=self.request.get("title")
+				entry.slug=slug
+				entry.body = self.request.get("body")
+				entry.body_html = re.sub("<br />$", "", to_html(self.request.get("body")))
+				entry.updated = datetime.datetime.now()
+			except Exception, message:
+				self.render("admin_edit.html", message="An error has occured: %s" % message); return
 		entry.put()
 		self.redirect("/entry/" + entry.slug)
 
