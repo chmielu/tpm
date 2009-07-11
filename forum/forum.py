@@ -60,7 +60,7 @@ class MainPage(TpmRequestHandler):
 		self.redirect('/forum')
 
 class TopicsPage(TpmRequestHandler):
-	def get(self, category):
+	def get(self, category, message = None):
 		cat = models.Category.gql("WHERE slug = :1 LIMIT 1", db.Category(category))
 		if not cat.count():
 			error(self, 404);return
@@ -92,30 +92,25 @@ class TopicsPage(TpmRequestHandler):
 		slug = category
 		category = models.Category.gql("WHERE slug = :1 LIMIT 1", db.Category(category))[0].title
 
-		self.forum_render("topics.html", slug=slug, category=category, topics=topics)
+		self.forum_render("topics.html", slug=slug, category=category, topics=topics, message=message)
 
 	@login_required
 	def post(self, category):
-		if not self.request.get("title"):
-			self.forum_render("topics.html", message="You must enter a topic title and the content!"); return
-		cat = models.Category.gql("WHERE slug = :1 LIMIT 1", db.Category(category))
-		if not cat.count():
-			self.forum_render("topics.html", message="Wrong category id!"); return
-		if not self.request.get("slug"):
-			slug = slugify(title)
-		else:
-			slug = self.request.get("slug")
-		if not slug:
-			self.forum_render("topics.html", message="You must specify slug (it must be other then \"admin\")!"); return
-		if models.Post.gql("WHERE topic_id = :1 AND category = :2 LIMIT 1", slug, cat[0]).count():
-			self.forum_render("topics.html", message="This topic slug already exist in this category!"); return
-
-		cat = cat[0]
-		cat.topics += 1
-		cat.posts += 1
-		cat.put()
-
 		try:
+			if not self.request.get("title"):
+				raise Exception("An error has occured: You must enter a topic title and the content!")
+			cat = models.Category.gql("WHERE slug = :1 LIMIT 1", db.Category(category)).get()
+			if not cat:
+				raise Exception("An error has occured: Wrong category id!")
+			if not self.request.get("slug"):
+				slug = slugify(title)
+			else:
+				slug = self.request.get("slug")
+			if not slug:
+				raise Exception("An error has occured: You must specify slug!")
+			if models.Post.gql("WHERE topic_id = :1 AND category = :2 LIMIT 1", slug, cat).count():
+				raise Exception("An error has occured: This topic slug already exist in this category!")
+
 			post = models.Post(
 				content = self.request.get("content"),
 				content_html = re.sub("<br />$", "", to_html(self.request.get("content"))),
@@ -126,13 +121,18 @@ class TopicsPage(TpmRequestHandler):
 				topic_id = slugify(slug)
 			)
 		except Exception, message:
-			self.forum_render("topics.html", message=message); return
+			self.get(category, message);return
+
+		cat.topics += 1
+		cat.posts += 1
+		cat.put()
+
 		post.put()
 
 		self.redirect("/forum/%s" % category)
 
 class PostsPage(TpmRequestHandler):
-	def get(self, category, topic):
+	def get(self, category, topic, message = None):
 		cat = models.Category.gql("WHERE slug = :1 LIMIT 1", db.Category(category))
 		if not cat.count():
 			error(self, 404);return
@@ -154,31 +154,26 @@ class PostsPage(TpmRequestHandler):
 		}
 
 		self.forum_render("posts.html", topic=array[0]["post"].title, category=cat[0].title,
-			closed=array[0]["post"].closed, slug=slug, posts=array)
+			closed=array[0]["post"].closed, slug=slug, posts=array, message=message)
 
 	@login_required
 	def post(self, category, topic):
-
-		cat = models.Category.gql("WHERE slug = :1 LIMIT 1", db.Category(category))
-
-		if not cat.count():
-			self.forum_render("posts.html", message="Wrong category id!"); return
-
-		oldest_post = models.Post.gql("WHERE topic_id = :1 ORDER BY date ASC LIMIT 1", topic)[0]
-
-		if oldest_post.closed:
-			error(self, 403, "This topic is closed!"); return
-
-		if self.request.get("title"):
-			title = self.request.get("title")
-		else:
-			title = "Re: %s" % oldest_post.title
-
-		cat = cat[0]
-		cat.posts += 1
-		cat.put()
-
 		try:
+			cat = models.Category.gql("WHERE slug = :1 LIMIT 1", db.Category(category)).get()
+
+			if not cat:
+				raise Exception("An error has occured: Wrong category id!")
+
+			oldest_post = models.Post.gql("WHERE topic_id = :1 ORDER BY date ASC LIMIT 1", topic).get()
+
+			if oldest_post.closed:
+				raise Exception("An error has occured: This topic is closed!")
+
+			if self.request.get("title"):
+				title = self.request.get("title")
+			else:
+				title = "Re: %s" % oldest_post.title
+
 			post = models.Post(
 				content = self.request.get("content"),
 				content_html = re.sub("<br />$", "", to_html(self.request.get("content"))),
@@ -187,7 +182,11 @@ class PostsPage(TpmRequestHandler):
 				topic_id = topic,
 			)
 		except Exception, message:
-			self.forum_render("posts.html", message=message)
+			self.get(category, topic, message);return
+
+		cat.posts += 1
+		cat.put()
+
 		post.put()
 
 		self.redirect("/forum/%s/%s" % (category, topic))
