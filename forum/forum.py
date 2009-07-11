@@ -34,9 +34,9 @@ import models
 from utils import *
 
 class MainPage(TpmRequestHandler):
-	def get(self):
+	def get(self, message = None):
 		categories = db.Query(models.Category).fetch(1000)
-		self.forum_render("index.html", categories=sorted(categories))
+		self.forum_render("index.html", categories=sorted(categories), message=message)
 
 	@administrator
 	def post(self):
@@ -46,16 +46,16 @@ class MainPage(TpmRequestHandler):
 			else:
 				slug = self.request.get("slug")
 			if not slug:
-				self.forum_render("index.html", message="An error has occured: You must specify category slug!"); return
-			if models.Category().gql("WHERE slug = :1 LIMIT 1", slug).count():
-				self.forum_render("index.html", message="An error has occured: This category slug already exists!"); return
+				raise Exception("An error has occured: You must specify category slug!")
+			if models.Category.gql("WHERE slug = :1 LIMIT 1", slug).count():
+				raise Exception("An error has occured: This category slug already exists!")
 			cat = models.Category(
 				title = db.Category(self.request.get("title")),
 				slug = db.Category(slugify(slug)),
 				desc = self.request.get("desc")
 			)
 		except Exception, message:
-			self.forum_render("index.html", message=message); return
+			self.get(message);return
 		cat.put()
 		self.redirect('/forum')
 
