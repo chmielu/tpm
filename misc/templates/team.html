@@ -18,13 +18,12 @@
 {# TODO check how should we show avatars #}
 					<div class="memberavatar"><img src="/avatar/{{ m.key }}" alt="{{ m.screenname }}'s avatar" /></div>
 {% endif %}
+					<h2>{{ m.screenname }}</h2>
 					<div class="memberinfo">
-						Nickname: <span>{{ m.screenname }}</span><br />
 						Real name: <span>{{ m.realname }}</span><br />
 					</div>
 				</div>
 {% endfor %}
 			</div>
-			<div class="grey"></div>
 		</div>
 {% endblock %}

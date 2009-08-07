@@ -39,6 +39,9 @@ span.input textarea { font-size: 0.88em; padding: inherit; height: 150px }
 span.input input:hover, span.input textarea:hover { background-color: #fcfcfc; }
 span.input .note { font-size: 0.8em; }
 
+span.file { text-align: left !important; padding: 0 10px !important; }
+span.file input { width: 50% !important; }
+
 #menu, #submenu { background-color: #9E5C7A; font-size: 0.8em; padding: 5px 10px; }
 #menu * { padding: 0 ; margin: 0; }
 #menu h1 { font-size: 3em; text-align: center; padding: 10px 0 20px 0; }
@@ -78,6 +81,10 @@ div.post span.checkbox { text-align: left; color: #666; font-size: 0.9em; paddin
 
 div.withborder { border-top: thin solid #ddd !important; }
 
+/* /user/avatar */
+div.av_preview { vertical-align: top; display: inline; }
+div.av_preview img { border: thin solid; padding: 1px; }
+
 div#message { background-color: #e3d185; color: #b5463f; font-size: 0.8em; padding: 10px; margin: -20px 0 10px 0; }
 div#message a { color: #b5463f; font-weight: bold; }
 
@@ -104,6 +111,11 @@ table#help td { border: thin solid #ddd; padding: 5px; }
 .win { background-color: #9AB54F; color:#fff; }
 .lost { background-color: #B5463F; color:#fff; }
 .leadingzeros { color: #ccc; }
+
+/* team page */
+div.member { background-color: #FFE9B7; color: #666; margin: 5px !important; overflow: hidden; }
+div.member h2 { background-color: #E3D185; }
+div.memberavatar { float: right; }
 
 #footer, div.grey { background-color: #F6F6F6; color: #666; font-size: 0.8em !important; }
 #footer { padding: 3px 10px; margin-top: 30px; }

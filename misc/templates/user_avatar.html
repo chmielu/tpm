@@ -6,10 +6,18 @@
 			<a href="/user">User CP Home</a> &raquo; <a href="/user/avatar">Avatar</a>
 		</div>
 		<div class="post">
-			<h2>Nickname:</h2>
+			<h2>Avatar:</h2>
 			<form action="/user/avatar" enctype="multipart/form-data" method="post">
-{% if profile.avatar %}Avatar preview: <img src="/avatar/{{ profile.key }}" />{% endif %}
-				Upload avatar: <span class="input"><input type="file" name="avatar" /></span>
+				<p><span>Your current avatar:
+			{% if profile.avatar %}
+				<div class="av_preview">
+					<img src="/avatar/{{ profile.key }}" />
+				</div>
+			{% else %}
+				No avatar is currently uploaded.
+			{% endif %}
+				</span></p>
+				<span class="input file">Upload avatar: <input type="file" name="avatar" /></span>
 				<span class="input"><input type="submit" name="delete" value="Delete avatar" /></span>
 				<span class="input"><input type="submit" value="Send" /></span>
 			</form>
