@@ -4,6 +4,7 @@ from google.appengine.api import users
 from google.appengine.ext import db
 from google.appengine.ext import webapp
 from google.appengine.ext.webapp.util import run_wsgi_app
+from google.appengine.api import images
 from utils import TpmRequestHandler, error
 import models
 
@@ -16,6 +17,12 @@ class AvatarPage(TpmRequestHandler):
 		self.misc_render("user_avatar.html")
 
 	def post(self):
+		profile = db.Query(models.Profile).filter("user =", users.get_current_user()).get()
+		if self.request.get("delete"):
+			profile.avatar = None
+		else:
+			profile.avatar = images.resize(self.request.get("avatar"), 60, 60)
+		profile.put()
 		self.redirect("/user/avatar")
 
 class ProfilePage(TpmRequestHandler):

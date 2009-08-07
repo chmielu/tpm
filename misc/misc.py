@@ -11,10 +11,10 @@ class AvatarHandler(TpmRequestHandler):
 	def get(self, key):
 		requested_profile = db.get(key)
 		if requested_profile.avatar:
-	      self.response.headers['Content-Type'] = "image/png"
-	      self.response.out.write(requested_profile.avatar)
-	    else:
-	      self.error(404)
+			self.response.headers['Content-Type'] = "image/png"
+			self.response.out.write(requested_profile.avatar)
+		else:
+			self.error(404)
 
 class ChatPage(TpmRequestHandler):
 	def get(self):

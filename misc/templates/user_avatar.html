@@ -8,8 +8,10 @@
 		<div class="post">
 			<h2>Nickname:</h2>
 			<form action="/user/avatar" enctype="multipart/form-data" method="post">
+{% if profile.avatar %}Avatar preview: <img src="/avatar/{{ profile.key }}" />{% endif %}
 				Upload avatar: <span class="input"><input type="file" name="avatar" /></span>
-				<span class="input"><input type="submit" value="Update"/></span>
+				<span class="input"><input type="submit" name="delete" value="Delete avatar" /></span>
+				<span class="input"><input type="submit" value="Send" /></span>
 			</form>
 		</div>
 {% endblock %}
