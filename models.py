@@ -30,6 +30,9 @@ class Post(db.Model):
 class Profile(db.Model):
 	user = db.UserProperty(required=True)
 	screenname = db.StringProperty(required=True)
+	realname = db.StringProperty()
+	is_member = db.BooleanProperty(default=False)
+	is_admin = db.BooleanProperty(default=False)
 	avatar = db.BlobProperty()
 	signature = db.TextProperty()
 	signature_html = db.TextProperty()

@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block title %}Avatar &laquo; User CP{% endblock %}
+{% block content %}
+		<div class="post_header">
+			<a href="/user">User CP Home</a> &raquo; <a href="/user/avatar">Avatar</a>
+		</div>
+		<div class="post">
+			<h2>Nickname:</h2>
+			<form action="/user/avatar" enctype="multipart/form-data" method="post">
+				Upload avatar: <span class="input"><input type="file" name="avatar" /></span>
+				<span class="input"><input type="submit" value="Update"/></span>
+			</form>
+		</div>
+{% endblock %}

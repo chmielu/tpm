@@ -7,6 +7,15 @@ from google.appengine.ext.webapp.util import run_wsgi_app
 from utils import TpmRequestHandler, error
 import models
 
+class AvatarHandler(TpmRequestHandler):
+	def get(self, key):
+		requested_profile = db.get(key)
+		if requested_profile.avatar:
+	      self.response.headers['Content-Type'] = "image/png"
+	      self.response.out.write(requested_profile.avatar)
+	    else:
+	      self.error(404)
+
 class ChatPage(TpmRequestHandler):
 	def get(self):
 		nickname=str(users.get_current_user()).split("@")[0]
@@ -107,7 +116,13 @@ class LogoutHandler(TpmRequestHandler):
         else:
             self.redirect('/')
 
+class TeamPage(TpmRequestHandler):
+	def get(self):
+		members = db.Query(models.Profile).filter("is_member =", True).fetch(200)
+		self.misc_render("team.html", members=members)
+
 application = webapp.WSGIApplication([
+	('/avatar/(.*)', AvatarHandler),
 	('/chat', ChatPage),
 	('/clanwars', ClanwarsPage),
 	('/code', CodePage),
@@ -116,6 +131,7 @@ application = webapp.WSGIApplication([
 	('/help/markup', MarkupPage),
 	('/login', LoginHandler),
 	('/logout', LogoutHandler),
+	('/team', TeamPage),
 	('/(.*)', ErrorPage),
 ], debug=True)
 

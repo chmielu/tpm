@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block title %}Team{% endblock %}
+{% block menu %}
+				<li><a href="/">Home</a></li>
+				<li><a href="/clanwars">Clanwars</a></li>
+				<li><a href="/team" id="current">Team</a></li>
+				<li><a href="/forum">Forum</a></li>
+				<li><a href="/chat">Chat</a></li>
+{% endblock %}
+{% block content %}
+		<div class="box">
+			<h2>Team</h2>
+			<div>
+{% for m in members %}
+				<div class="member">
+{% if m.avatar %}
+{# TODO check how should we show avatars #}
+					<div class="memberavatar"><img src="/avatar/{{ m.key }}" alt="{{ m.screenname }}'s avatar" /></div>
+{% endif %}
+					<div class="memberinfo">
+						Nickname: <span>{{ m.screenname }}</span><br />
+						Real name: <span>{{ m.realname }}</span><br />
+					</div>
+				</div>
+{% endfor %}
+			</div>
+			<div class="grey"></div>
+		</div>
+{% endblock %}
