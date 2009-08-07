@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block title %}Create profile &laquo; User CP{% endblock %}
+{% block content %}
+		<div class="post_header">
+			<a href="/user/{{ user }}">User CP Home</a> &raquo; Create profile
+		</div>
+		<div class="post">
+			<span class="input"><textarea rows="15" cols="80" disabled="disabled">
+
+
+						input
+							some
+								rules
+									here,
+										please.</textarea>
+			<form action="/user/create" method="post">
+				I agree with rules above <span class="input"><input type="checkbox" name="rules_accepted" value="yes" /></span>
+				<span class="input"><input type="submit" name="no_thanks" value="No, thanks" /></span>
+				<span class="input"><input type="submit" value="Continue" /></span>
+			</form>
+		</div>
+{% endblock %}

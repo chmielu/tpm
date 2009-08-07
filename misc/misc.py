@@ -14,7 +14,7 @@ class AvatarHandler(TpmRequestHandler):
 			self.response.headers['Content-Type'] = "image/png"
 			self.response.out.write(requested_profile.avatar)
 		else:
-			self.error(404)
+			error(self, 404); return
 
 class ChatPage(TpmRequestHandler):
 	def get(self):

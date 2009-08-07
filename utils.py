@@ -13,19 +13,20 @@ MEMBERS = "thepuma.eu"
 class TpmRequestHandler(webapp.RequestHandler):
 	def __init__(self,**kw):
 		webapp.RequestHandler.__init__(self, **kw)
+		self.user = users.get_current_user()
+		self.is_admin = str(self.user) in ADMINS
+		if self.user:
+			self.profile = db.Query(models.Profile).filter("user =", self.user).get()
 
 	def render(self, tmpl, tmplprefix="blog/", *args, **kw):
 		template_values = dict(**kw)
-		user = users.get_current_user()
-		if user:
-			profile = db.Query(models.Profile).filter("user =", user).get()
-			if profile:
-				template_values.update({'profile': profile})
-			elif not "message" in template_values:
-				 template_values.update({'message': "We strongly recommend you to update your profile <a href=\"/user/profile\">here</a>."})
-		template_values.update({'user': user})
+		if self.profile:
+			template_values.update({'profile': self.profile})
+		elif not "message" in template_values:
+			 template_values.update({'message': "We strongly recommend you to update your profile <a href=\"/user/profile\">here</a>."})
+		template_values.update({'user': self.user})
 		template_values.update({'users': users})
-		template_values.update({'admin': str(users.get_current_user()) in ADMINS})
+		template_values.update({'admin': self.is_admin})
 		path = os.path.join(os.path.dirname(__file__), '%stemplates/%s' % (tmplprefix, tmpl))
 		self.response.out.write(template.render(path, template_values))
 

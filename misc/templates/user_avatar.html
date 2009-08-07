@@ -3,15 +3,15 @@
 {% block title %}Avatar &laquo; User CP{% endblock %}
 {% block content %}
 		<div class="post_header">
-			<a href="/user">User CP Home</a> &raquo; <a href="/user/avatar">Avatar</a>
+			<a href="/user/{{ username }}">User CP Home</a> &raquo; <a href="/user/{{ username }}/avatar">Avatar</a>
 		</div>
 		<div class="post">
 			<h2>Avatar:</h2>
-			<form action="/user/avatar" enctype="multipart/form-data" method="post">
+			<form action="/user/{{ username }}/avatar" enctype="multipart/form-data" method="post">
 				<p><span>Your current avatar:
-			{% if profile.avatar %}
+			{% if form_profile.avatar %}
 				<div class="av_preview">
-					<img src="/avatar/{{ profile.key }}" />
+					<img src="/avatar/{{ form_profile.key }}" />
 				</div>
 			{% else %}
 				No avatar is currently uploaded.
