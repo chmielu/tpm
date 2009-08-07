@@ -15,9 +15,9 @@
 {% for m in members %}
 				<div class="member">
 {% if m.avatar %}
-					<div class="memberavatar"><img src="/avatar/{{ m.key }}" alt="{{ m.screenname }}'s avatar" /></div>
+					<div class="memberavatar"><img src="/avatar/{{ m.key }}" alt="{{ m.screenname|default:m.user }}'s avatar" /></div>
 {% endif %}
-					<h2>{{ m.screenname }}</h2>
+					<h2>{{ m.screenname|default:m.user }}</h2>
 					<div class="memberinfo">
 						Real name: <span>{{ m.realname }}</span><br />
 					</div>
