@@ -6,7 +6,7 @@
 		<div class="box">
 			<h2>Application crashed</h2>
 			<div>
-				{% if message %}{{ message }}{% else %}Server couldn't handle your request.{% endif %}
+				{% if error_message %}{{ error_message }}{% else %}Server couldn't handle your request.{% endif %}
 			</div>
 			<div class="grey">{% if referer %}<a href="{{ referer }}">Go back</a> &bull; {% endif %}<a href="/">Go to homepage</a></div>
 		</div>

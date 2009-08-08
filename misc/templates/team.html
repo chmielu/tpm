@@ -19,7 +19,8 @@
 {% endif %}
 					<h2>{{ m.screenname|default:m.user }}</h2>
 					<div class="memberinfo">
-						Real name: <span>{{ m.realname }}</span><br />
+						{% if m.realname %}Real name: <span>{{ m.realname }}</span><br />{% endif %}
+						{% if m.info %}Additional info: <span>{{ m.info }}</span><br />{% endif %}
 					</div>
 				</div>
 {% endfor %}
