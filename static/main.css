@@ -34,7 +34,7 @@ blockquote em { font-weight: bold; font-style: normal; padding-bottom: 5px; disp
 blockquote em:after { content: " wrote:"; }
 
 span.input { text-align: center; font-size: 0.98em; margin: 5px 0; padding: 0; width: 100%; display: block; }
-span.input input, span.input textarea { font-size: 20px; color: #666; background-color: #f6f6f6; border: 0; width: 98%; }
+span.input input, span.input textarea { vertical-align: middle; font-size: 20px; color: #666; background-color: #f6f6f6; border: 0; width: 98%; }
 span.input textarea { font-size: 0.88em; padding: inherit; height: 150px }
 span.input input:hover, span.input textarea:hover { background-color: #fcfcfc; }
 span.input .note { font-size: 0.8em; }
