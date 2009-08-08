@@ -14,12 +14,12 @@ class UserPage(TpmRequestHandler):
 		username = urllib.unquote(username)
 		if username == str(self.user):
 			if not self.profile:
-				self.redirect("/user/create")
+				self.redirect("/user/create"); return
 			form_profile = self.profile
 		elif self.is_admin:
 			form_profile = db.Query(models.Profile).filter("user =", users.User(username)).get()
 			if not form_profile:
-				self.redirect("/admin/user/new")
+				self.redirect("/admin/user/new"); return
 		else:
 			self.misc_render("user_overview.html", username=username); return
 		self.misc_render("user.html", form_profile=form_profile, username=username)
@@ -30,12 +30,12 @@ class AvatarPage(TpmRequestHandler):
 		username = urllib.unquote(username)
 		if username == str(self.user):
 			if not self.profile:
-				self.redirect("/user/create")
+				self.redirect("/user/create"); return
 			form_profile = self.profile
 		elif self.is_admin:
 			form_profile = db.Query(models.Profile).filter("user =", users.User(username)).get()
 			if not form_profile:
-				self.redirect("/admin/user/new")
+				self.redirect("/admin/user/new"); return
 		else:
 			error(self, 403); return
 		self.misc_render("user_avatar.html", form_profile=form_profile, username=username)
@@ -46,7 +46,7 @@ class AvatarPage(TpmRequestHandler):
 			error(self, 403); return
 		profile = db.Query(models.Profile).filter("user =", users.User(username)).get()
 		if not profile:
-			self.redirect("/user/create")
+			self.redirect("/user/create"); return
 		if self.request.get("delete"):
 			profile.avatar = None
 		else:
@@ -64,7 +64,7 @@ class CreatePage(TpmRequestHandler):
 		if self.profile:
 			error(self, 403); return
 		if self.request.get("no_thanks"):
-			self.redirect("/")
+			self.redirect("/"); return
 		if not self.request.get("rules_accepted"):
 			self.misc_render("user_create.html", message="You need to accept rules."); return
 		if db.Query(models.Profile).filter("user =", self.user).get():
@@ -75,7 +75,7 @@ class CreatePage(TpmRequestHandler):
 		profile.put()
 		
 		# FIXME add some informations here
-		self.misc_render("user_profile.html", message="Profile succesfully created. You can edit your basic informations here.")
+		self.misc_render("user_profile.html", message="Profile succesfully created. You can edit your basic informations here.", username=self.user)
 
 class ProfilePage(TpmRequestHandler):
 	def get(self, username):
@@ -83,12 +83,12 @@ class ProfilePage(TpmRequestHandler):
 		username = urllib.unquote(username)
 		if username == str(self.user):
 			if not self.profile:
-				self.redirect("/user/create")
+				self.redirect("/user/create"); return
 			form_profile = self.profile
 		elif self.is_admin:
 			form_profile = db.Query(models.Profile).filter("user =", users.User(username)).get()
 			if not form_profile:
-				self.redirect("/admin/user/new")
+				self.redirect("/admin/user/new"); return
 		else:
 			error(self, 403); return
 		self.misc_render("user_profile.html", form_profile=form_profile, username=username)
@@ -101,7 +101,7 @@ class ProfilePage(TpmRequestHandler):
 		screenname = self.request.get("screenname")
 
 		if not profile:
-			self.redirect("/user/create")
+			self.redirect("/user/create"); return
 		
 		if screenname != profile.screenname:
 			if db.Query(models.Profile).filter("screenname =", screenname).get():
