@@ -8,7 +8,7 @@
 		<div class="post">
 			<h2>Nickname:</h2>
 			<form action="/user/{{ username }}/profile" method="post">
-				<span class="input"><input type="text" name="screenname" value="{{ form_profile.screenname }}" /></span>
+				<span class="input"><input type="text" name="screenname" value="{{ form_profile.screenname|default:"" }}" /></span>
 				<span class="input"><input type="submit" value="Update"/></span>
 			</form>
 		</div>
