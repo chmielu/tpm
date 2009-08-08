@@ -65,16 +65,12 @@ class CreatePage(TpmRequestHandler):
 			error(self, 403); return
 		if self.request.get("no_thanks"):
 			self.redirect("/"); return
-		if not self.request.get("rules_accepted"):
+		if not self.request.get("i_agree"):
 			self.misc_render("user_create.html", message="You need to accept rules."); return
-		if db.Query(models.Profile).filter("user =", self.user).get():
-			self.misc_render("user_create.html", message="This screen name is taken."); return
 		profile = models.Profile(
 			user = self.user,
 		)
 		profile.put()
-		
-		# FIXME add some informations here
 		self.misc_render("user_profile.html", message="Profile succesfully created. You can edit your basic informations here.", username=self.user)
 
 class ProfilePage(TpmRequestHandler):
