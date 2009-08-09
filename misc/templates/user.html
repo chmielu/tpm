@@ -6,7 +6,7 @@
 			<a href="/user/{{ username }}">User CP Home</a>
 		</div>
 		<div class="post">
-			<h2>User Control Panel{% ifnotequal profile.user.nickname username %} ({{ username }}){% endifnotequal %}</h2>
+			<h2>User Control Panel{% ifnotequal profile.user.nickname username %} ({{ username }}'s){% endifnotequal %}</h2>
 			<table id="forum">
 				<tr>
 					<td><a href="/user/{{ username }}/profile">Profile</a><span>change your personal info</span></td>
