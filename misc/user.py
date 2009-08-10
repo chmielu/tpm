@@ -114,7 +114,7 @@ class ProfilePage(TpmRequestHandler):
 		if screenname:
 			if screenname != profile.screenname:
 				if db.Query(models.Profile).filter("screenname =", screenname).get():
-					self.misc_render("user_profile.html", message="This screen name is taken."); return
+					self.misc_render("user_profile.html", message="This screen name is taken.", form_profile=profile, username=username); return
 			profile.screenname = screenname
 		if self.request.get("realname"):
 			profile.realname = self.request.get("realname")
