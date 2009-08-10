@@ -12,6 +12,7 @@
 		<div class="box">
 			<h2>Team</h2>
 			<div>
+{% if members %}
 {% for m in members %}
 				<div class="member">
 {% if m.avatar %}
@@ -21,9 +22,13 @@
 					<div class="memberinfo">
 						{% if m.realname %}Real name: <span>{{ m.realname }}</span><br />{% endif %}
 						{% if m.info %}Additional info: <span>{{ m.info }}</span><br />{% endif %}
+						{% if m.signature_html %}______________<br />{{ m.signature_html }}{% endif %}
 					</div>
 				</div>
 {% endfor %}
+{% else %}
+				No members? Sorry. :-(
+{% endif %}
 			</div>
 		</div>
 {% endblock %}

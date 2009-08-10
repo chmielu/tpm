@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block title %}Signature &laquo; User CP{% endblock %}
+{% block content %}
+		<div class="post_header">
+			<a href="/user/{{ username }}">User CP Home</a> &raquo; <a href="/user/{{ username }}/signature">Signature</a>
+		</div>
+		<div class="post">
+			<h2>Signature:</h2>
+			<form action="/user/{{ username }}/signature" method="post">
+				<span class="input"><textarea name="signature" rows="15" cols="80">{{ form_profile.signature|default:"" }}</textarea></span>
+				<span class="input"><input type="submit" value="Update"/></span>
+			</form>
+			<p class="grey">You can use <a href="/help/markup">BBCode syntax</a>.</p>
+		</div>
+{% endblock %}

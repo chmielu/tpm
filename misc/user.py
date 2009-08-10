@@ -1,11 +1,11 @@
-import sys, urllib
+import sys, re, urllib
 sys.path.append("../")
 from google.appengine.api import users
 from google.appengine.ext import db
 from google.appengine.ext import webapp
 from google.appengine.ext.webapp.util import run_wsgi_app
 from google.appengine.api import images
-from utils import TpmRequestHandler, error
+from utils import TpmRequestHandler, error, to_html
 import models
 
 class UserPage(TpmRequestHandler):
@@ -21,7 +21,7 @@ class UserPage(TpmRequestHandler):
 			if not form_profile:
 				self.redirect("/admin/user/new"); return
 		else:
-			self.misc_render("user_overview.html", username=username); return
+			self.redirect("/user/%s/overview" % username); return
 		self.misc_render("user.html", form_profile=form_profile, username=username)
 
 class AvatarPage(TpmRequestHandler):
@@ -73,6 +73,14 @@ class CreatePage(TpmRequestHandler):
 		profile.put()
 		self.misc_render("user_profile.html", message="Profile succesfully created. You can edit your basic informations here.", username=self.user)
 
+class OverviewPage(TpmRequestHandler):
+	def get(self, username):
+		username = urllib.unquote(username)
+		profile = db.Query(models.Profile).filter("user =", users.User(username)).get()
+		if not profile:
+			error(self, 404); return
+		self.misc_render("user_overview.html", username=username); return
+
 class ProfilePage(TpmRequestHandler):
 	def get(self, username):
 		# TODO need to rewrite this method
@@ -93,29 +101,66 @@ class ProfilePage(TpmRequestHandler):
 		username = urllib.unquote(username)
 		if username != str(self.user) and not self.is_admin:
 			error(self, 403); return
+		
+		if not self.is_admin and (self.request.get("is_member") or self.request.get("is_admin")):
+			error(self, 403); return
+		
 		profile = db.Query(models.Profile).filter("user =", users.User(username)).get()
-		screenname = self.request.get("screenname")
 
 		if not profile:
 			self.redirect("/user/create"); return
 		
-		if screenname != profile.screenname:
-			if db.Query(models.Profile).filter("screenname =", screenname).get():
-				self.misc_render("user_profile.html", message="This screen name is taken."); return
-		profile.screenname = screenname
+		screenname = self.request.get("screenname")
+		if screenname:
+			if screenname != profile.screenname:
+				if db.Query(models.Profile).filter("screenname =", screenname).get():
+					self.misc_render("user_profile.html", message="This screen name is taken."); return
+			profile.screenname = screenname
+		if self.request.get("realname"):
+			profile.realname = self.request.get("realname")
+		if self.request.get("is_member"):
+			profile.is_member = True
+		if self.request.get("is_admin"):
+			profile.is_admin = True
+		
 		profile.put()
 		self.redirect("/user/%s/profile" % username)
 
 class SignaturePage(TpmRequestHandler):
 	def get(self, username):
-		self.misc_render("user_signature.html")
+		# TODO need to rewrite this method
+		username = urllib.unquote(username)
+		if username == str(self.user):
+			if not self.profile:
+				self.redirect("/user/create"); return
+			form_profile = self.profile
+		elif self.is_admin:
+			form_profile = db.Query(models.Profile).filter("user =", users.User(username)).get()
+			if not form_profile:
+				self.redirect("/admin/user/new"); return
+		else:
+			error(self, 403); return
+		self.misc_render("user_signature.html", form_profile=form_profile, username=username)
 
 	def post(self, username):
-		self.redirect("/user/signature")
+		username = urllib.unquote(username)
+		if username != str(self.user) and not self.is_admin:
+			error(self, 403); return
+		profile = db.Query(models.Profile).filter("user =", users.User(username)).get()
+		if not profile:
+			self.redirect("/user/create"); return
+		if self.request.get("delete"):
+			profile.signature = profile.signature_html = None
+		else:
+			profile.signature = self.request.get("signature")
+			profile.signature_html = re.sub("<br />$", "", to_html(self.request.get("signature")))
+		profile.put()
+		self.redirect("/user/%s/signature" % username)
 
 application = webapp.WSGIApplication([
 	('/user/create', CreatePage),
 	('/user/(.*)/avatar', AvatarPage),
+	('/user/(.*)/overview', OverviewPage),
 	('/user/(.*)/profile', ProfilePage),
 	('/user/(.*)/signature', SignaturePage),
 	('/user/(.*)', UserPage),

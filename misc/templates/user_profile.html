@@ -6,9 +6,17 @@
 			<a href="/user/{{ username }}">User CP Home</a> &raquo; <a href="/user/{{ username }}/profile">Profile</a>
 		</div>
 		<div class="post">
-			<h2>Nickname:</h2>
 			<form action="/user/{{ username }}/profile" method="post">
+				<h2>Nickname:</h2>
 				<span class="input"><input type="text" name="screenname" value="{{ form_profile.screenname|default:"" }}" /></span>
+				<h2>Realname:</h2>
+				<span class="input"><input type="text" name="realname" value="{{ form_profile.realname|default:"" }}" /></span>
+{% if admin %}
+				<h2>Has membership?</h2>
+				<span class="input"><input type="checkbox" name="is_member" value="is_member" {% if form_profile.is_member %}checked="checked"{% endif %} /></span>
+				<h2>Is admin?</h2>
+				<span class="input"><input type="checkbox" name="is_admin" value="is_admin" {% if form_profile.is_admin %}checked="checked"{% endif %} /></span>
+{% endif %}
 				<span class="input"><input type="submit" value="Update"/></span>
 			</form>
 		</div>
