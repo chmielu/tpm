@@ -1,4 +1,29 @@
-<!DOCTYPE html>
-<title>Placeholder</title>
-<h1>Template placeholder</h1>
-<h6>and its html5 valid!</h6>
+{% extends 'base.html' %}
+
+{% block title %}{{ profiler.screenname }}'s profile{% endblock %}
+{% block content %}
+		<div class="post_header">
+			<a href="/user/{{ username }}">User CP Home</a> &raquo; <a href="/user/{{ username }}/overview">{{ profiler.screenname }}'s profile</a>
+		</div>
+		<div class="post">
+		{% if profiler.avatar %}
+			<div class="memberavatar">
+				<img class="avatar" title="{{ profiler.screenname }}'s avatar" alt="avatar" src="/avatar/{{ profiler.key }}"/>
+			</div>
+		{% endif %}
+			<table id="forum" class="profile">
+				<tr>
+					<td class="name">Nick name</td>
+					<td>{{ profiler.screenname }}</td>
+				</tr>
+				<tr>
+					<td class="name">Real name</td>
+					<td>{{ profiler.realname }}</td>
+				</tr>
+				<tr>
+					<td class="name">Signature</td>
+					<td>{% if profiler.signature %}<blockquote>{{ profiler.signature_html }}</blockquote>{% else %}None{% endif %}</td>
+				</tr>
+			</table>
+		</div>
+{% endblock %}

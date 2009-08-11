@@ -1,10 +1,10 @@
 import sys, re, urllib
 sys.path.append("../")
+from google.appengine.api import images
 from google.appengine.api import users
 from google.appengine.ext import db
 from google.appengine.ext import webapp
 from google.appengine.ext.webapp.util import run_wsgi_app
-from google.appengine.api import images
 from utils import TpmRequestHandler, error, to_html
 import models
 
@@ -59,7 +59,7 @@ class CreatePage(TpmRequestHandler):
 		if self.profile:
 			error(self, 403); return
 		self.misc_render("user_create.html", username=self.user)
-	
+
 	def post(self):
 		if self.profile:
 			error(self, 403); return
@@ -79,7 +79,7 @@ class OverviewPage(TpmRequestHandler):
 		profile = db.Query(models.Profile).filter("user =", users.User(username)).get()
 		if not profile:
 			error(self, 404); return
-		self.misc_render("user_overview.html", username=username); return
+		self.misc_render("user_overview.html", username=username, profiler=profile); return
 
 class ProfilePage(TpmRequestHandler):
 	def get(self, username):
@@ -101,15 +101,15 @@ class ProfilePage(TpmRequestHandler):
 		username = urllib.unquote(username)
 		if username != str(self.user) and not self.is_admin:
 			error(self, 403); return
-		
+
 		if not self.is_admin and (self.request.get("is_member") or self.request.get("is_admin")):
 			error(self, 403); return
-		
+
 		profile = db.Query(models.Profile).filter("user =", users.User(username)).get()
 
 		if not profile:
 			self.redirect("/user/create"); return
-		
+
 		screenname = self.request.get("screenname")
 		if screenname:
 			if screenname != profile.screenname:
@@ -122,7 +122,7 @@ class ProfilePage(TpmRequestHandler):
 			profile.is_member = True
 		if self.request.get("is_admin"):
 			profile.is_admin = True
-		
+
 		profile.put()
 		self.redirect("/user/%s/profile" % username)
 
