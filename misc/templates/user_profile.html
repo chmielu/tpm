@@ -11,7 +11,7 @@
 				<span class="input"><input type="text" name="screenname" value="{{ form_profile.screenname|default:"" }}" /></span>
 				<h2>Realname:</h2>
 				<span class="input"><input type="text" name="realname" value="{{ form_profile.realname|default:"" }}" /></span>
-{% if admin %}
+{% if current_user.is_admin %}
 				<h2>Has membership?</h2>
 				<span class="input"><input type="checkbox" name="is_member" value="is_member" {% if form_profile.is_member %}checked="checked"{% endif %} /></span>
 				<h2>Is admin?</h2>

@@ -28,8 +28,5 @@ application = webapp.WSGIApplication([	('/', MainPage),
 										('/entry/(.*)', EntryPage),
 									], debug=True)
 
-def main():
-	run_wsgi_app(application)
-
 if __name__ == "__main__":
-	main()
+	run_wsgi_app(application)

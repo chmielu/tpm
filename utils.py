@@ -14,20 +14,21 @@ class TpmRequestHandler(webapp.RequestHandler):
 	def __init__(self,**kw):
 		webapp.RequestHandler.__init__(self, **kw)
 		self.user = users.get_current_user()
-		self.is_admin = str(self.user) in ADMINS
 		self.profile = None
 		if self.user:
 			self.profile = db.Query(models.Profile).filter("user =", self.user).get()
+		self.is_admin = str(self.user) in ADMINS or (self.profile and self.profile.is_admin)
+		self.current_user = {
+			"user": self.user,
+			"profile": self.profile,
+			"is_admin": self.is_admin,
+		}
 
 	def render(self, tmpl, tmplprefix="blog/", *args, **kw):
 		template_values = dict(**kw)
-		template_values.update({'user': self.user})
-		if self.profile:
-			template_values.update({'profile': self.profile})
-		elif self.user and not "message" in template_values:
+		if self.user and not self.profile and not "message" in template_values:
 			 template_values.update({'message': "We strongly recommend you to create your profile <a href=\"/user/create\">here</a>."})
-		template_values.update({'users': users})
-		template_values.update({'admin': self.is_admin})
+		template_values.update({'current_user': self.current_user})
 		path = os.path.join(os.path.dirname(__file__), '%stemplates/%s' % (tmplprefix, tmpl))
 		self.response.out.write(template.render(path, template_values))
 
@@ -53,7 +54,7 @@ def administrator(method):
             if self.request.method == "GET":
                 self.redirect(users.create_login_url(self.request.uri))
                 return
-        if not str(user) in ADMINS:
+        if not str(self.user) in ADMINS and not (self.profile and self.profile.is_admin):
             error(self, 403)
         else:
             return method(self, *args, **kwargs)

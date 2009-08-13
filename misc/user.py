@@ -79,7 +79,7 @@ class OverviewPage(TpmRequestHandler):
 		profile = db.Query(models.Profile).filter("user =", users.User(username)).get()
 		if not profile:
 			error(self, 404); return
-		self.misc_render("user_overview.html", username=username, profiler=profile); return
+		self.misc_render("user_overview.html", username=username, profiler=profile)
 
 class ProfilePage(TpmRequestHandler):
 	def get(self, username):
@@ -120,8 +120,12 @@ class ProfilePage(TpmRequestHandler):
 			profile.realname = self.request.get("realname")
 		if self.request.get("is_member"):
 			profile.is_member = True
+		else:
+			profile.is_member = False
 		if self.request.get("is_admin"):
 			profile.is_admin = True
+		else:
+			profile.is_admin = False
 
 		profile.put()
 		self.redirect("/user/%s/profile" % username)
@@ -166,8 +170,5 @@ application = webapp.WSGIApplication([
 	('/user/(.*)', UserPage),
 ], debug=True)
 
-def main():
-	run_wsgi_app(application)
-
 if __name__ == "__main__":
-	main()
+	run_wsgi_app(application)

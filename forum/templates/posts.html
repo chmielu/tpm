@@ -9,7 +9,7 @@
 			<h2>{{ post.post.title|escape }}</h2>
 			<p>{{ post.post.content_html }}{% if post.profile.signature_html %}<span class="sig"><hr/>{{ post.profile.signature_html }}</span>{% endif %}</p>
 			<p class="grey">
-			{% if admin %}
+			{% if current_user.is_admin %}
 				{% if not forloop.first %}
 				<span><a href="/forum/admin/delete/post/{{ post.post.key }}"><img src="/static/delete.png" alt="Delete icon" title="Delete" /></a></span>
 				<span><a href="/forum/admin/edit/post/{{ post.post.key }}"><img src="/static/edit.png" alt="Edit icon" title="Edit" /></a></span>
@@ -21,7 +21,7 @@
 		</div>
 		{% endfor %}
 
-		{% if user and not closed %}
+		{% if current_user.user and not closed %}
 		<div class="post">
 			<h2>Create reply:</h2>
 			<form action="/forum/{{ slug.category }}/{{ slug.topic }}" method="post">

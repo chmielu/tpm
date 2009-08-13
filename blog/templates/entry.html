@@ -5,6 +5,6 @@
 		<div class="box">
 			<h2><a href="/entry/{{ entry.slug }}">{{ entry.title }}</a></h2>
 			<div>{{ entry.body_html }}</div>
-			<div class="grey">by {{ entry.author }} on {{ entry.published|date:"r" }}{% if entry.it_was_updated %} (with later changes){% endif %}{% if admin %}<br /><a href="/admin/entry/edit/{{ entry.slug }}">edit</a> &bull; <a href="/admin/entry/delete/{{ entry.slug }}">delete</a>{% endif %}</div>
+			<div class="grey">by {{ entry.author }} on {{ entry.published|date:"r" }}{% if entry.it_was_updated %} (with later changes){% endif %}{% if current_user.is_admin %}<br /><a href="/admin/entry/edit/{{ entry.slug }}">edit</a> &bull; <a href="/admin/entry/delete/{{ entry.slug }}">delete</a>{% endif %}</div>
 		</div>
 {% endblock %}

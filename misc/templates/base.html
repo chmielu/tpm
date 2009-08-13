@@ -28,7 +28,7 @@
 			</ul>
 		</div>
 		<div id="submenu">
-			{% if user %}You are logged in as {% if profile.screenname %}{{ profile.screenname }} ({{ user }}){% else %}{{ user }}{% endif %}. <a href="/user/{{ user }}">UserCP</a>,{% if admin %} <a href="/admin">Admin</a>,{% endif %} <a href="/logout">Logout</a>.{% else %}You are not logged in. Please <a href="/login">login</a> with your Google Account.{% endif %}
+			{% if current_user.user %}You are logged in as {% if current_user.profile.screenname %}{{ current_user.profile.screenname }} ({{ current_user.user }}){% else %}{{ current_user.user }}{% endif %}. <a href="/user/{{ current_user.user }}">UserCP</a>,{% if current_user.is_admin %} <a href="/admin">Admin</a>,{% endif %} <a href="/logout">Logout</a>.{% else %}You are not logged in. Please <a href="/login">login</a> with your Google Account.{% endif %}
 		</div>
 {% if message %}
 		<div id="message">

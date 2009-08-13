@@ -9,16 +9,16 @@ import models
 
 class AvatarHandler(TpmRequestHandler):
 	def get(self, key):
-		requested_profile = db.get(key)
-		if requested_profile.avatar:
+		profile = db.get(key)
+		if profile.avatar:
 			self.response.headers['Content-Type'] = "image/png"
-			self.response.out.write(requested_profile.avatar)
+			self.response.out.write(profile.avatar)
 		else:
 			error(self, 404); return
 
 class ChatPage(TpmRequestHandler):
 	def get(self):
-		nickname=str(users.get_current_user()).split("@")[0]
+		nickname=str(self.user).split("@")[0]
 		self.misc_render("chat.html", nickname=nickname)
 
 class ClanwarsPage(TpmRequestHandler):
@@ -101,20 +101,18 @@ class MarkupPage(TpmRequestHandler):
 		self.misc_render("help_markup.html")
 
 class LoginHandler(TpmRequestHandler):
-    def get(self):
-        user = users.get_current_user()
-        if not user:
-            self.redirect(users.create_login_url(os.environ["HTTP_REFERER"]))
-        else:
-            self.redirect('/')
+	def get(self):
+		if not self.user:
+			self.redirect(users.create_login_url(os.environ["HTTP_REFERER"]))
+		else:
+			self.redirect('/')
 
 class LogoutHandler(TpmRequestHandler):
-    def get(self):
-        user = users.get_current_user()
-        if user:
-            self.redirect(users.create_logout_url(os.environ["HTTP_REFERER"]))
-        else:
-            self.redirect('/')
+	def get(self):
+		if self.user:
+			self.redirect(users.create_logout_url(os.environ["HTTP_REFERER"]))
+		else:
+			self.redirect('/')
 
 class TeamPage(TpmRequestHandler):
 	def get(self):
@@ -135,8 +133,5 @@ application = webapp.WSGIApplication([
 	('/(.*)', ErrorPage),
 ], debug=True)
 
-def main():
-	run_wsgi_app(application)
-
 if __name__ == "__main__":
-	main()
+	run_wsgi_app(application)

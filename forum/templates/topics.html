@@ -14,7 +14,7 @@
 					<th class="left">Title</th>
 					<th>Replies</th>
 					<th>Last post</th>
-				{% if admin %}
+				{% if current_user.is_admin %}
 					<th colspan="2">Admin</th>
 				{% endif %}
 				</tr>
@@ -37,7 +37,7 @@
 					<td><a href="/forum/{{ slug }}/{{ topic.oldest.topic_id }}">{{ topic.oldest.title|escape }}</a></td>
 					<td class="replies">{{ topic.replies }}</td>
 					<td class="last_post">posted {{ topic.newest.date|timesince }} ago<br/> by {{ topic.profile.screenname|default:topic.newest.user }}</td>
-				{% if admin %}
+				{% if current_user.is_admin %}
 					<td class="icon"><a href="/forum/admin/edit/topic/{{ slug }}/{{ topic.oldest.topic_id }}"><img src="/static/edit.png" alt="Edit icon" title="Edit" /></a></td>
 					<td class="icon"><a href="/forum/admin/delete/topic/{{ slug }}/{{ topic.oldest.topic_id }}"><img src="/static/delete.png" alt="Delete icon" title="Delete" /></a></td>
 				{% endif %}
@@ -49,14 +49,14 @@
 			{% endif %}
 		</div>
 
-		{% if user %}
+		{% if current_user.user %}
 		<div class="post">
 			<h2>Create new topic:</h2>
 			<form action="/forum/{{ slug }}" method="post">
 				<span class="input"><input type="text" name="title" onkeyup="slugify('slug', this.value)" /></span>
 				<span class="input"><input type="text" name="slug" id="slug" /></span>
 				<span class="input"><textarea name="content"></textarea></span>
-			{% if admin %}
+			{% if current_user.is_admin %}
 				<span class="input checkbox"><input type="checkbox" name="sticky" />Sticked topic</span>
 				<span class="input checkbox"><input type="checkbox" name="closed" />Closed topic</span>
 			{% endif %}

@@ -26,7 +26,7 @@ class NewEntryPage(TpmRequestHandler):
 		try:
 			entry = models.Entry(
 				key_name=slug,
-				author=users.get_current_user(),
+				author=self.user,
 				title=self.request.get("title"),
 				slug=slug,
 				body=self.request.get("body"),
@@ -100,8 +100,5 @@ application = webapp.WSGIApplication([	('/admin', MainPage),
 										('/admin/entry', ListEntryPage),
 									], debug=True)
 
-def main():
-	run_wsgi_app(application)
-
 if __name__ == "__main__":
-	main()
+	run_wsgi_app(application)

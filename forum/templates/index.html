@@ -13,7 +13,7 @@
 					<th class="left">Title</th>
 					<th>Topics</th>
 					<th>Posts</th>
-				{% if admin %}
+				{% if current_user.is_admin %}
 					<th colspan="2">Admin</th>
 				{% endif %}
 				</tr>
@@ -22,7 +22,7 @@
 					<td><a href="/forum/{{ category.slug }}">{{ category.title|escape }}</a>{% if category.desc %}<span>{{ category.desc|escape }}</span>{% endif %}</td>
 					<td class="replies">{{ category.topics }}</td>
 					<td class="replies">{{ category.posts }}</td>
-				{% if admin %}
+				{% if current_user.is_admin %}
 					<td class="icon"><a href="/forum/admin/edit/category/{{ category.slug }}"><img src="/static/edit.png" alt="Edit icon" title="Edit" /></a></td>
 					<td class="icon"><a href="/forum/admin/delete/category/{{ category.slug }}"><img src="/static/delete.png" alt="Delete icon" title="Delete" /></a></td>
 				{% endif %}
@@ -34,7 +34,7 @@
 			{% endif %}
 		</div>
 
-		{% if admin %}
+		{% if current_user.is_admin %}
 		<div class="post">
 			<h2>Create new category:</h2>
 			<form action="/forum" method="post">
