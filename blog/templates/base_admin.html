@@ -12,17 +12,15 @@
 	{% block extrahead %}{% endblock %}
 </head>
 
-<body>
+<body id="section-admin-{% block section %}home{% endblock %}">
 	<div id="page" class="blog">
 		<div id="menu">
 			<h1>The Puppets Masters</h1>
 			<ul>
-{% block menu %}
 				<li><a href="/">Frontend</a></li>
-				<li><a href="/admin" id="current">Backend</a></li>
-				<li><a href="/admin/entry">Entries</a></li>
-				<li><a href="/admin/settings">Settings</a></li>
-{% endblock %}
+				<li><a id="nav-admin-home" href="/admin">Backend</a></li>
+				<li><a id="nav-admin-entries" href="/admin/entry">Entries</a></li>
+				<li><a id="nav-admin-settings" href="/admin/settings">Settings</a></li>
 				<li><a href="/logout">Logout</a></li>
 			</ul>
 		</div>

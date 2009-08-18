@@ -13,18 +13,16 @@
 	{% block extrahead %}{% endblock %}
 </head>
 
-<body>
+<body id="section-misc-{% block section %}home{% endblock %}">
 	<div id="page" class="blog">
 		<div id="menu">
 			<h1>The Puppets Masters</h1>
 			<ul>
-{% block menu %}
-				<li><a href="/">Home</a></li>
-				<li><a href="/clanwars">Clanwars</a></li>
-				<li><a href="/team">Team</a></li>
-				<li><a href="/forum">Forum</a></li>
-				<li><a href="/chat">Chat</a></li>
-{% endblock %}
+				<li><a id="nav-blog-home" href="/">Home</a></li>
+				<li><a id="nav-misc-clanwars" href="/clanwars">Clanwars</a></li>
+				<li><a id="nav-misc-team" href="/team">Team</a></li>
+				<li><a id="nav-forum-home" href="/forum">Forum</a></li>
+				<li><a id="nav-misc-chat" href="/chat">Chat</a></li>
 			</ul>
 		</div>
 		<div id="submenu">

@@ -46,7 +46,17 @@ span.file input { width: 50% !important; }
 #menu * { padding: 0 ; margin: 0; }
 #menu h1 { font-size: 3em; text-align: center; padding: 10px 0 20px 0; text-shadow: 1px 1px 6px #000; }
 #menu li { color: #333; display: inline; }
-#menu #current, #submenu #subcurrent { font-weight: bold;}
+/*#menu #current, */
+#submenu #subcurrent { font-weight: bold;}
+/* menus */
+#section-admin-home #nav-admin-home,
+#section-admin-entries #nav-admin-entries,
+#section-admin-settings #nav-admin-settings,
+#section-blog-home #nav-blog-home,
+#section-forum #nav-forum,
+#section-misc-chat #nav-misc-chat,
+#section-misc-clanwars #nav-misc-clanwars,
+#section-misc-team #nav-misc-team {font-weight: bold;}
 
 #submenu { background-color: #f6f6f6; color: #666; font-size: 0.7em; margin-bottom: 30px; }
 #submenu a { color: #000; }

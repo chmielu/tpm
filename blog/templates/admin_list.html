@@ -1,12 +1,7 @@
 {% extends 'base_admin.html' %}
 
 {% block title %}Entry list{% endblock %}
-{% block menu %}
-				<li><a href="/">Frontend</a></li>
-				<li><a href="/admin">Backend</a></li>
-				<li><a href="/admin/entry" id="current">Entries</a></li>
-				<li><a href="/admin/settings">Settings</a></li>
-{% endblock %}
+{% block section %}entries{% endblock %}
 {% block submenu %}
 		<div id="submenu">
 			<ul>
